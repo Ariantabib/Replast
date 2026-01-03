@@ -2,7 +2,9 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="color-scheme" content="dark only">
+    <meta name="theme-color" content="#0f1419">
     <title>رپلاست | تولیدکننده محصولات پلاستیکی</title>
     
     <!-- Tailwind CSS -->
@@ -16,8 +18,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     <style>
-        /* ===== CSS Variables ===== */
+        /* ===== Force Dark Theme ===== */
         :root {
+            color-scheme: dark only !important;
             --color-bg-primary: #0f1419;
             --color-bg-secondary: #1a2332;
             --color-bg-tertiary: #243044;
@@ -31,6 +34,13 @@
             --color-error: #ef4444;
         }
 
+        /* Override any light mode preferences */
+        @media (prefers-color-scheme: light), (prefers-color-scheme: dark) {
+            :root {
+                color-scheme: dark only !important;
+            }
+        }
+
         * {
             font-family: 'Vazirmatn', sans-serif;
             box-sizing: border-box;
@@ -38,11 +48,15 @@
 
         html {
             scroll-behavior: smooth;
+            background: var(--color-bg-primary) !important;
         }
 
         body {
-            background: var(--color-bg-primary);
-            color: var(--color-text-primary);
+            margin: 0;
+            padding: 0;
+            background: var(--color-bg-primary) !important;
+            color: var(--color-text-primary) !important;
+            min-height: 100vh;
             overflow-x: hidden;
         }
 
@@ -51,7 +65,7 @@
             background: var(--color-glass);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--color-glass-border);
+            border-bottom: 1px solid var(--color-glass-border);
         }
 
         .glass-card {
@@ -86,15 +100,6 @@
             to {
                 opacity: 1;
                 transform: translateX(0);
-            }
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% {
-                box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 40px rgba(255, 107, 53, 0.5);
             }
         }
 
@@ -149,6 +154,10 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
         }
 
         .btn-primary::before {
@@ -180,6 +189,10 @@
             transition: all 0.3s ease;
             border: 2px solid var(--color-glass-border);
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
         }
 
         .btn-secondary:hover {
@@ -255,6 +268,7 @@
             transition: all 0.3s ease;
             border: 3px solid transparent;
             position: relative;
+            flex-shrink: 0;
         }
 
         .color-option:hover {
@@ -281,14 +295,18 @@
         /* ===== Modal ===== */
         .modal-overlay {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(5px);
-            z-index: 100;
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 16px;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
@@ -302,8 +320,8 @@
         .modal-content {
             background: var(--color-bg-secondary);
             border-radius: 20px;
-            max-width: 900px;
             width: 100%;
+            max-width: 900px;
             max-height: 90vh;
             overflow-y: auto;
             transform: scale(0.9) translateY(20px);
@@ -313,6 +331,18 @@
 
         .modal-overlay.active .modal-content {
             transform: scale(1) translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .modal-overlay {
+                padding: 0;
+                align-items: flex-end;
+            }
+            
+            .modal-content {
+                max-height: 92vh;
+                border-radius: 20px 20px 0 0;
+            }
         }
 
         /* ===== Product Cards ===== */
@@ -336,17 +366,6 @@
             overflow: hidden;
         }
 
-        .product-card-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .product-card:hover .product-card-image img {
-            transform: scale(1.1);
-        }
-
         /* ===== Price Display ===== */
         .price-display {
             font-size: 2rem;
@@ -357,6 +376,12 @@
 
         .price-display.updating {
             transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .price-display {
+                font-size: 1.5rem;
+            }
         }
 
         /* ===== Order Item ===== */
@@ -409,26 +434,41 @@
             background: white;
             color: #1a1a1a;
             border-radius: 12px;
-            padding: 30px;
+            padding: 20px;
             direction: rtl;
+            font-size: 14px;
         }
 
         .invoice-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
         .invoice-table th,
         .invoice-table td {
-            padding: 12px;
+            padding: 10px 8px;
             border: 1px solid #ddd;
             text-align: right;
+            font-size: 13px;
         }
 
         .invoice-table th {
             background: #f5f5f5;
             font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .invoice-preview {
+                padding: 12px;
+                font-size: 12px;
+            }
+
+            .invoice-table th,
+            .invoice-table td {
+                padding: 6px 4px;
+                font-size: 11px;
+            }
         }
 
         /* ===== Form Inputs ===== */
@@ -502,44 +542,11 @@
             gap: 6px;
         }
 
-        /* ===== Responsive ===== */
-        @media (max-width: 768px) {
-            .price-display {
-                font-size: 1.5rem;
-            }
-
-            .counter-btn {
-                width: 40px;
-                height: 40px;
-            }
-
-            .counter-input {
-                width: 60px;
-            }
-
-            .modal-content {
-                border-radius: 16px 16px 0 0;
-                max-height: 95vh;
-                margin-top: auto;
-            }
-
-            .invoice-preview {
-                padding: 15px;
-                font-size: 0.85rem;
-            }
-
-            .invoice-table th,
-            .invoice-table td {
-                padding: 8px 6px;
-                font-size: 0.8rem;
-            }
-        }
-
         /* ===== Image Slider ===== */
         .image-slider {
             position: relative;
             overflow: hidden;
-            border-radius: 12px;
+            border-radius: 0;
             touch-action: pan-y pinch-zoom;
         }
 
@@ -555,7 +562,7 @@
 
         .slider-slide {
             min-width: 100%;
-            aspect-ratio: 16/9;
+            height: 100%;
             object-fit: cover;
             user-select: none;
             pointer-events: none;
@@ -563,7 +570,7 @@
 
         .slider-dots {
             position: absolute;
-            bottom: 8px;
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -571,8 +578,8 @@
         }
 
         .slider-dot {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.4);
             cursor: pointer;
@@ -581,11 +588,11 @@
 
         .slider-dot.active {
             background: var(--color-accent);
-            width: 20px;
-            border-radius: 3px;
+            width: 24px;
+            border-radius: 4px;
         }
 
-        /* ===== Product Modal - No Scroll ===== */
+        /* ===== Product Modal - No Scroll on Mobile ===== */
         .product-modal-content {
             display: flex;
             flex-direction: column;
@@ -593,75 +600,70 @@
             overflow: hidden;
         }
 
-        .product-modal-body {
+        .product-modal-header {
+            flex-shrink: 0;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--color-glass-border);
             display: flex;
-            flex-direction: column;
-            height: 100%;
-            overflow: hidden;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .product-modal-gallery {
             flex-shrink: 0;
-            height: 35vh;
-            min-height: 150px;
-            max-height: 250px;
+            height: 200px;
         }
 
         .product-modal-gallery .image-slider {
             height: 100%;
         }
 
-        .product-modal-gallery .slider-slide {
-            aspect-ratio: unset;
-            height: 100%;
-        }
-
         .product-modal-info {
             flex: 1;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .product-modal-footer {
+            flex-shrink: 0;
+            padding: 16px 20px;
+            border-top: 1px solid var(--color-glass-border);
         }
 
         @media (max-width: 768px) {
             .product-modal-content {
                 max-height: 85vh;
-                border-radius: 20px 20px 0 0;
+            }
+
+            .product-modal-header {
+                padding: 12px 16px;
             }
 
             .product-modal-gallery {
-                height: 28vh;
-                min-height: 120px;
-                max-height: 180px;
+                height: 160px;
             }
 
             .product-modal-info {
-                padding: 16px !important;
+                padding: 16px;
             }
 
             .product-modal-info h4 {
-                font-size: 0.9rem !important;
+                font-size: 0.9rem;
             }
 
             .product-modal-info p,
             .product-modal-info li {
-                font-size: 0.8rem !important;
+                font-size: 0.85rem;
             }
 
-            .product-modal-info .space-y-4 {
-                gap: 12px !important;
-            }
-
-            .product-modal-info .space-y-2 {
-                gap: 6px !important;
+            .product-modal-footer {
+                padding: 12px 16px;
             }
         }
 
         @media (max-height: 600px) {
             .product-modal-gallery {
-                height: 25vh;
-                min-height: 100px;
-                max-height: 140px;
+                height: 120px;
             }
         }
 
@@ -675,15 +677,30 @@
             padding: 40px;
             direction: rtl;
         }
+
+        /* ===== Header Cart Badge ===== */
+        .cart-badge {
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            background: white;
+            color: var(--color-accent);
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
     <!-- ===== HEADER ===== -->
     <header id="header" class="glass fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-        <div class="container mx-auto px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16 lg:h-20">
                 <!-- Logo -->
-                <div class="flex items-center gap-3 animate-fade-in">
+                <div class="flex items-center gap-3">
                     <div class="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center animate-float">
                         <span class="text-white font-bold text-lg lg:text-xl">ر</span>
                     </div>
@@ -700,7 +717,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                         </svg>
                         سبد سفارش
-                        <span id="header-cart-count" class="hidden w-5 h-5 bg-white text-orange-500 rounded-full text-xs font-bold flex items-center justify-center">0</span>
+                        <span id="header-cart-count" class="cart-badge hidden">0</span>
                     </button>
                 </nav>
 
@@ -715,9 +732,9 @@
             <!-- Mobile Navigation -->
             <div id="mobile-menu" class="md:hidden overflow-hidden max-h-0 transition-all duration-300">
                 <div class="py-4 border-t border-white/10">
-                    <a href="#products" class="block py-3 text-gray-300 hover:text-white transition-colors">مشاهده محصولات</a>
+                    <a href="#products" class="block py-3 text-gray-300 hover:text-white transition-colors" onclick="toggleMobileMenu()">مشاهده محصولات</a>
                     <a href="#calculator" class="block py-3 text-gray-300 hover:text-white transition-colors" onclick="toggleMobileMenu()">محاسبه سفارش</a>
-                    <a href="#contact" class="block py-3 text-gray-300 hover:text-white transition-colors">تماس سریع</a>
+                    <a href="#contact" class="block py-3 text-gray-300 hover:text-white transition-colors" onclick="toggleMobileMenu()">تماس سریع</a>
                     <button onclick="scrollToCart(); toggleMobileMenu();" class="w-full mt-3 btn-primary flex items-center justify-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
@@ -742,34 +759,32 @@
             <div class="absolute inset-0 opacity-5" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 50px 50px;"></div>
         </div>
 
-        <div class="container mx-auto px-4 lg:px-8 relative z-10">
-            <div class="max-w-4xl mx-auto text-center">
-                <div class="animate-fade-in-up" style="animation-delay: 0.2s;">
-                    <span class="inline-block px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium mb-6">
-                        تولیدکننده محصولات پلاستیکی با کیفیت
-                    </span>
-                </div>
-                
-                <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-6 leading-tight animate-fade-in-up" style="animation-delay: 0.4s;">
-                    کیفیت صنعتی،
-                    <span class="text-transparent bg-clip-text bg-gradient-to-l from-orange-400 to-orange-600">قیمت منصفانه</span>
-                </h1>
-                
-                <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto animate-fade-in-up" style="animation-delay: 0.6s;">
-                    رپلاست با سال‌ها تجربه در تولید محصولات پلاستیکی، همراه مطمئن کسب‌وکار شماست. کیفیت را با قیمت شفاف تجربه کنید.
-                </p>
-                
-                <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style="animation-delay: 0.8s;">
-                    <a href="#products" class="btn-primary text-lg px-8 py-4">
-                        مشاهده محصولات
-                    </a>
-                    <a href="tel:+989123456789" class="btn-secondary text-lg px-8 py-4 flex items-center justify-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                        </svg>
-                        تماس سریع
-                    </a>
-                </div>
+        <div class="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="animate-fade-in-up" style="animation-delay: 0.2s;">
+                <span class="inline-block px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium mb-6">
+                    تولیدکننده محصولات پلاستیکی با کیفیت
+                </span>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-6 leading-tight animate-fade-in-up" style="animation-delay: 0.4s;">
+                کیفیت صنعتی،
+                <span class="text-transparent bg-clip-text bg-gradient-to-l from-orange-400 to-orange-600">قیمت منصفانه</span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto animate-fade-in-up" style="animation-delay: 0.6s;">
+                رپلاست با سال‌ها تجربه در تولید محصولات پلاستیکی، همراه مطمئن کسب‌وکار شماست. کیفیت را با قیمت شفاف تجربه کنید.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style="animation-delay: 0.8s;">
+                <a href="#products" class="btn-primary text-lg px-8 py-4">
+                    مشاهده محصولات
+                </a>
+                <a href="tel:+989123456789" class="btn-secondary text-lg px-8 py-4 flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                    </svg>
+                    تماس سریع
+                </a>
             </div>
         </div>
 
@@ -782,8 +797,8 @@
     </section>
 
     <!-- ===== PRODUCTS SECTION ===== -->
-    <section id="products" class="py-20 lg:py-32 relative">
-        <div class="container mx-auto px-4 lg:px-8">
+    <section id="products" class="py-20 lg:py-32">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="section-title text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">محصولات ما</h2>
                 <p class="text-gray-400 mt-6 max-w-xl mx-auto">محصولات با کیفیت، قیمت شفاف و تحویل مطمئن</p>
@@ -849,7 +864,7 @@
 
     <!-- ===== SMART PRICE CALCULATOR ===== -->
     <section id="calculator" class="py-20 lg:py-32 bg-gradient-to-b from-transparent via-slate-900/50 to-transparent">
-        <div class="container mx-auto px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="section-title text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">محاسبه‌گر هوشمند قیمت</h2>
                 <p class="text-gray-400 mt-6 max-w-xl mx-auto">محصول مورد نظر را انتخاب کنید و قیمت نهایی را به‌صورت لحظه‌ای مشاهده کنید</p>
@@ -885,7 +900,7 @@
                         <!-- Color Selection -->
                         <div>
                             <label class="block text-white font-semibold mb-4">انتخاب رنگ:</label>
-                            <div class="flex flex-wrap gap-4 items-center">
+                            <div class="flex flex-wrap gap-3 items-center">
                                 <button onclick="selectColor('red')" class="color-option selected" style="background: #ef4444;" data-color="red" title="قرمز"></button>
                                 <button onclick="selectColor('blue')" class="color-option" style="background: #3b82f6;" data-color="blue" title="آبی"></button>
                                 <button onclick="selectColor('green')" class="color-option" style="background: #22c55e;" data-color="green" title="سبز"></button>
@@ -893,7 +908,7 @@
                                 <button onclick="selectColor('purple')" class="color-option" style="background: #a855f7;" data-color="purple" title="بنفش"></button>
                                 <button onclick="selectColor('pink')" class="color-option" style="background: #ec4899;" data-color="pink" title="صورتی"></button>
                                 <button onclick="selectColor('white')" class="color-option" style="background: #ffffff;" data-color="white" title="سفید"></button>
-                                <div class="h-8 w-px bg-white/20 mx-2"></div>
+                                <div class="h-8 w-px bg-white/20 mx-2 hidden sm:block"></div>
                                 <button onclick="selectColor('mixed')" id="color-mixed" class="py-2 px-4 rounded-lg text-sm font-medium transition-all duration-300 bg-white/5 text-gray-400 border border-white/20 hover:border-orange-500 hover:text-orange-400">
                                     رنگ جور 🎨
                                 </button>
@@ -942,12 +957,12 @@
                     <div class="mt-8 pt-8 border-t border-white/10">
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                             <div>
-                                <p class="text-gray-400 mb-1">قیمت واحد: <span id="unit-price" class="text-white">۱۵۰,۰۰۰</span> تومان</p>
-                                <p class="text-gray-400" id="original-price-row">قیمت کل: <span id="original-price" class="text-white line-through">۱۵۰,۰۰۰</span> تومان</p>
+                                <p class="text-gray-400 mb-1">قیمت واحد: <span id="unit-price" class="text-white">۳۵,۰۰۰</span> تومان</p>
+                                <p class="text-gray-400" id="original-price-row">قیمت کل: <span id="original-price" class="text-white line-through">۳۵,۰۰۰</span> تومان</p>
                             </div>
                             <div class="text-left md:text-right">
                                 <p class="text-sm text-gray-400 mb-1">قیمت نهایی:</p>
-                                <p class="price-display" id="final-price">۱۵۰,۰۰۰ تومان</p>
+                                <p class="price-display" id="final-price">۳۵,۰۰۰ تومان</p>
                             </div>
                         </div>
                     </div>
@@ -968,7 +983,7 @@
 
     <!-- ===== ORDER LIST (CART) ===== -->
     <section id="order-list" class="py-20 lg:py-32">
-        <div class="container mx-auto px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="section-title text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">سبد سفارش</h2>
                 <p class="text-gray-400 mt-6 max-w-xl mx-auto">محصولات انتخابی شما برای دریافت پیش‌فاکتور</p>
@@ -1015,7 +1030,7 @@
 
     <!-- ===== CONTACT SECTION ===== -->
     <section id="contact" class="py-20 lg:py-32 bg-gradient-to-b from-transparent via-slate-900/50 to-transparent">
-        <div class="container mx-auto px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="section-title text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">تماس با ما</h2>
                 <p class="text-gray-400 mt-6 max-w-xl mx-auto">برای ثبت سفارش یا هرگونه سوال، با واحد فروش در ارتباط باشید</p>
@@ -1024,12 +1039,12 @@
             <div class="max-w-5xl mx-auto">
                 <div class="grid md:grid-cols-2 gap-8">
                     <!-- Contact Info -->
-                    <div class="glass-card rounded-3xl p-8">
+                    <div class="glass-card rounded-3xl p-6 md:p-8">
                         <h3 class="text-2xl font-bold text-white mb-8">راه‌های ارتباطی</h3>
                         
-                        <div class="space-y-6">
+                        <div class="space-y-4">
                             <a href="tel:+989123456789" class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-orange-500/10 transition-all group">
-                                <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center group-hover:bg-orange-500/30 transition-all">
+                                <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center group-hover:bg-orange-500/30 transition-all flex-shrink-0">
                                     <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                                     </svg>
@@ -1041,7 +1056,7 @@
                             </a>
 
                             <a href="https://wa.me/989123456789" target="_blank" class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-green-500/10 transition-all group">
-                                <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center group-hover:bg-green-500/30 transition-all">
+                                <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center group-hover:bg-green-500/30 transition-all flex-shrink-0">
                                     <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                                     </svg>
@@ -1053,7 +1068,7 @@
                             </a>
 
                             <a href="https://t.me/replast" target="_blank" class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-blue-500/10 transition-all group">
-                                <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center group-hover:bg-blue-500/30 transition-all">
+                                <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center group-hover:bg-blue-500/30 transition-all flex-shrink-0">
                                     <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
                                     </svg>
@@ -1065,7 +1080,7 @@
                             </a>
 
                             <a href="https://instagram.com/replast" target="_blank" class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-pink-500/10 transition-all group">
-                                <div class="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center group-hover:bg-pink-500/30 transition-all">
+                                <div class="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center group-hover:bg-pink-500/30 transition-all flex-shrink-0">
                                     <svg class="w-6 h-6 text-pink-400" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
                                     </svg>
@@ -1079,7 +1094,7 @@
                     </div>
 
                     <!-- Trust Badges -->
-                    <div class="glass-card rounded-3xl p-8">
+                    <div class="glass-card rounded-3xl p-6 md:p-8">
                         <h3 class="text-2xl font-bold text-white mb-8">چرا رپلاست؟</h3>
                         
                         <div class="space-y-6">
@@ -1139,7 +1154,7 @@
 
     <!-- ===== FOOTER ===== -->
     <footer class="py-12 border-t border-white/10">
-        <div class="container mx-auto px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
@@ -1193,53 +1208,51 @@
     <!-- ===== PRODUCT MODAL ===== -->
     <div id="product-modal" class="modal-overlay" onclick="closeProductModal(event)">
         <div class="modal-content product-modal-content" onclick="event.stopPropagation()">
-            <div class="product-modal-body">
-                <!-- Modal Header -->
-                <div class="flex items-center justify-between p-4 md:p-6 border-b border-white/10 flex-shrink-0">
-                    <h3 id="modal-title" class="text-xl md:text-2xl font-bold text-white">نام محصول</h3>
-                    <button onclick="closeProductModal()" class="w-9 h-9 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:bg-white/20 hover:text-white transition-all">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
+            <!-- Modal Header -->
+            <div class="product-modal-header">
+                <h3 id="modal-title" class="text-xl md:text-2xl font-bold text-white">نام محصول</h3>
+                <button onclick="closeProductModal()" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:bg-white/20 hover:text-white transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
 
-                <!-- Image Slider -->
-                <div class="product-modal-gallery flex-shrink-0">
-                    <div class="image-slider h-full" id="product-slider">
-                        <div id="modal-slider-track" class="slider-track h-full">
-                            <!-- Images will be inserted here -->
-                        </div>
-                        <div id="modal-slider-dots" class="slider-dots">
-                            <!-- Dots will be inserted here -->
-                        </div>
+            <!-- Image Slider -->
+            <div class="product-modal-gallery">
+                <div class="image-slider h-full" id="product-slider">
+                    <div id="modal-slider-track" class="slider-track h-full">
+                        <!-- Images will be inserted here -->
+                    </div>
+                    <div id="modal-slider-dots" class="slider-dots">
+                        <!-- Dots will be inserted here -->
                     </div>
                 </div>
+            </div>
 
-                <!-- Product Details -->
-                <div class="product-modal-info p-4 md:p-6">
-                    <div id="modal-content" class="space-y-3 md:space-y-4">
-                        <!-- Content will be inserted here -->
-                    </div>
-
-                    <!-- Action Button -->
-                    <div class="mt-4 md:mt-6 flex-shrink-0">
-                        <button id="modal-calc-btn" onclick="closeProductModal(); scrollToCalculator();" class="w-full btn-primary text-base md:text-lg py-3 md:py-4">
-                            محاسبه قیمت
-                        </button>
-                    </div>
+            <!-- Product Details -->
+            <div class="product-modal-info">
+                <div id="modal-content" class="space-y-4">
+                    <!-- Content will be inserted here -->
                 </div>
+            </div>
+
+            <!-- Action Button -->
+            <div class="product-modal-footer">
+                <button id="modal-calc-btn" onclick="closeProductModal(); scrollToCalculator();" class="w-full btn-primary text-lg py-3">
+                    محاسبه قیمت
+                </button>
             </div>
         </div>
     </div>
 
     <!-- ===== INVOICE MODAL ===== -->
     <div id="invoice-modal" class="modal-overlay" onclick="closeInvoiceModal(event)">
-        <div class="modal-content max-w-5xl" onclick="event.stopPropagation()">
-            <div class="p-6 md:p-8">
+        <div class="modal-content" style="max-width: 1000px;" onclick="event.stopPropagation()">
+            <div class="p-4 md:p-6 lg:p-8">
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-2xl font-bold text-white">دریافت پیش‌فاکتور</h3>
+                    <h3 class="text-xl md:text-2xl font-bold text-white">دریافت پیش‌فاکتور</h3>
                     <button onclick="closeInvoiceModal()" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:bg-white/20 hover:text-white transition-all">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -1247,7 +1260,7 @@
                     </button>
                 </div>
 
-                <div class="grid lg:grid-cols-2 gap-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
                     <!-- User Info Form -->
                     <div>
                         <h4 class="text-lg font-semibold text-white mb-4">اطلاعات خریدار</h4>
@@ -1265,7 +1278,7 @@
                         </div>
 
                         <!-- Download Button -->
-                        <div class="mt-8">
+                        <div class="mt-6">
                             <button id="download-pdf-btn" onclick="generatePDF()" disabled class="w-full btn-primary text-lg py-4 flex items-center justify-center gap-3 opacity-50 cursor-not-allowed">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -1279,7 +1292,7 @@
                     <!-- Invoice Preview -->
                     <div>
                         <h4 class="text-lg font-semibold text-white mb-4">پیش‌نمایش پیش‌فاکتور</h4>
-                        <div class="invoice-preview max-h-[500px] overflow-y-auto" id="invoice-preview">
+                        <div class="invoice-preview max-h-80 overflow-y-auto" id="invoice-preview">
                             <!-- Preview content will be generated -->
                         </div>
                     </div>
@@ -1320,8 +1333,7 @@
                 'pink': 'صورتی',
                 'white': 'سفید',
                 'mixed': 'رنگ جور'
-            },
-            sliderIntervals: {}
+            }
         };
 
         // ===== UTILITY FUNCTIONS =====
@@ -1348,9 +1360,9 @@
         window.addEventListener('scroll', () => {
             const header = document.getElementById('header');
             if (window.scrollY > 50) {
-                header.classList.add('bg-slate-900/90');
+                header.style.background = 'rgba(15, 20, 25, 0.95)';
             } else {
-                header.classList.remove('bg-slate-900/90');
+                header.style.background = '';
             }
         });
 
@@ -1364,7 +1376,7 @@
             }
         }
 
-        // ===== SCROLL TO CALCULATOR =====
+        // ===== SCROLL FUNCTIONS =====
         function scrollToCalculator(product) {
             if (product) {
                 selectProduct(product);
@@ -1372,7 +1384,6 @@
             document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // ===== SCROLL TO CART =====
         function scrollToCart() {
             document.getElementById('order-list').scrollIntoView({ behavior: 'smooth' });
         }
@@ -1381,7 +1392,6 @@
         function selectProduct(product) {
             state.selectedProduct = product;
             
-            // Update tabs
             document.getElementById('tab-tablecloth').className = product === 'tablecloth' 
                 ? 'flex-1 min-w-[140px] py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-orange-500/20 text-orange-400 border-2 border-orange-500'
                 : 'flex-1 min-w-[140px] py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-white/5 text-gray-400 border-2 border-transparent hover:border-white/20';
@@ -1390,7 +1400,6 @@
                 ? 'flex-1 min-w-[140px] py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-orange-500/20 text-orange-400 border-2 border-orange-500'
                 : 'flex-1 min-w-[140px] py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-white/5 text-gray-400 border-2 border-transparent hover:border-white/20';
 
-            // Show/hide options
             document.getElementById('options-tablecloth').classList.toggle('hidden', product !== 'tablecloth');
             document.getElementById('options-garbage-bag').classList.toggle('hidden', product !== 'garbage-bag');
 
@@ -1416,7 +1425,6 @@
         function selectColor(color) {
             state.selectedColor = color;
             
-            // Update color buttons
             document.querySelectorAll('.color-option').forEach(btn => {
                 btn.classList.remove('selected');
                 if (btn.dataset.color === color) {
@@ -1424,7 +1432,6 @@
                 }
             });
 
-            // Update mixed button
             const mixedBtn = document.getElementById('color-mixed');
             if (color === 'mixed') {
                 mixedBtn.className = 'py-2 px-4 rounded-lg text-sm font-medium transition-all duration-300 bg-orange-500/20 text-orange-400 border border-orange-500';
@@ -1439,12 +1446,11 @@
 
         // ===== QUANTITY CONTROL =====
         function changeQuantity(delta) {
-            const input = document.getElementById('quantity-input');
             let newVal = state.quantity + delta;
             if (newVal < 1) newVal = 1;
             if (newVal > 999) newVal = 999;
             state.quantity = newVal;
-            input.value = newVal;
+            document.getElementById('quantity-input').value = newVal;
             updatePrice();
         }
 
@@ -1473,7 +1479,6 @@
             const discountAmount = originalTotal * (discount / 100);
             const finalPrice = originalTotal - discountAmount;
 
-            // Update display
             document.getElementById('unit-price').textContent = formatPrice(unitPrice);
             document.getElementById('original-price').textContent = formatPrice(originalTotal);
             
@@ -1482,7 +1487,6 @@
             priceDisplay.textContent = formatPrice(finalPrice) + ' تومان';
             setTimeout(() => priceDisplay.classList.remove('updating'), 300);
 
-            // Show/hide discount
             const discountInfo = document.getElementById('discount-info');
             const originalPriceRow = document.getElementById('original-price-row');
             
@@ -1536,14 +1540,9 @@
 
             state.cart.push(cartItem);
             renderCart();
-            
-            // Show notification
             showNotification('محصول به سبد اضافه شد');
             
-            // Scroll to cart
-            setTimeout(() => {
-                document.getElementById('order-list').scrollIntoView({ behavior: 'smooth' });
-            }, 500);
+            setTimeout(() => scrollToCart(), 500);
         }
 
         // ===== RENDER CART =====
@@ -1553,15 +1552,12 @@
             const container = document.getElementById('cart-items-container');
             const headerCartCount = document.getElementById('header-cart-count');
 
-            // Update header cart count
             const totalItems = state.cart.reduce((sum, item) => sum + item.quantity, 0);
             if (totalItems > 0) {
                 headerCartCount.textContent = toPersianDigits(totalItems);
                 headerCartCount.classList.remove('hidden');
-                headerCartCount.classList.add('flex');
             } else {
                 headerCartCount.classList.add('hidden');
-                headerCartCount.classList.remove('flex');
             }
 
             if (state.cart.length === 0) {
@@ -1576,16 +1572,16 @@
             container.innerHTML = state.cart.map((item, index) => `
                 <div class="order-item animate-slide-in" style="animation-delay: ${index * 0.1}s;" data-id="${item.id}">
                     <div class="flex justify-between items-start gap-4">
-                        <div class="flex-1">
+                        <div class="flex-1 min-w-0">
                             <h4 class="text-white font-semibold mb-1">${item.name}</h4>
                             <p class="text-gray-400 text-sm mb-2">${item.details}</p>
-                            <div class="flex flex-wrap gap-4 text-sm">
+                            <div class="flex flex-wrap gap-3 text-sm">
                                 <span class="text-gray-400">تعداد: <span class="text-white">${toPersianDigits(item.quantity)}</span></span>
                                 <span class="text-gray-400">قیمت واحد: <span class="text-white">${formatPrice(item.unitPrice)}</span></span>
                                 ${item.discount > 0 ? `<span class="text-green-400">${toPersianDigits(item.discount)}٪ تخفیف</span>` : ''}
                             </div>
                         </div>
-                        <div class="text-left">
+                        <div class="text-left flex-shrink-0">
                             <p class="text-orange-400 font-bold text-lg">${formatPrice(item.total)} تومان</p>
                             <button onclick="removeFromCart(${item.id})" class="text-gray-500 hover:text-red-400 text-sm mt-2 transition-colors">
                                 حذف
@@ -1595,7 +1591,6 @@
                 </div>
             `).join('');
 
-            // Update total
             const total = state.cart.reduce((sum, item) => sum + item.total, 0);
             document.getElementById('cart-total').textContent = formatPrice(total) + ' تومان';
         }
@@ -1615,7 +1610,7 @@
         // ===== NOTIFICATION =====
         function showNotification(message) {
             const notification = document.createElement('div');
-            notification.className = 'fixed top-24 right-4 left-4 md:left-auto md:w-80 bg-green-500/90 text-white px-6 py-4 rounded-xl shadow-lg z-50 animate-fade-in flex items-center gap-3';
+            notification.className = 'fixed top-20 left-4 right-4 md:left-auto md:right-4 md:w-80 bg-green-500/90 text-white px-6 py-4 rounded-xl shadow-lg z-[1001] animate-fade-in flex items-center gap-3';
             notification.innerHTML = `
                 <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -1636,94 +1631,90 @@
             'garbage-bag': {
                 title: 'کیسه زباله',
                 images: [
-                    'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450"><rect fill="%231a2332" width="800" height="450"/><text x="400" y="225" text-anchor="middle" fill="%2322c55e" font-size="24" font-family="Arial">کیسه زباله - تصویر ۱</text></svg>',
-                    'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450"><rect fill="%231a2332" width="800" height="450"/><text x="400" y="225" text-anchor="middle" fill="%2322c55e" font-size="24" font-family="Arial">کیسه زباله - تصویر ۲</text></svg>'
+                    'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400"><rect fill="%231a2332" width="800" height="400"/><text x="400" y="200" text-anchor="middle" fill="%2322c55e" font-size="20" font-family="Arial">کیسه زباله - تصویر ۱</text></svg>',
+                    'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400"><rect fill="%231a2332" width="800" height="400"/><text x="400" y="200" text-anchor="middle" fill="%2322c55e" font-size="20" font-family="Arial">کیسه زباله - تصویر ۲</text></svg>'
                 ],
                 content: `
-                    <div class="space-y-3">
-                        <div class="bg-green-500/10 border border-green-500/30 rounded-xl p-3 md:p-4">
-                            <h4 class="text-green-400 font-semibold mb-1 text-sm md:text-base">مشخصات محصول</h4>
-                            <p class="text-gray-300 text-sm md:text-base">مدل: <span class="text-white">سبز – ۳ رول</span></p>
-                        </div>
-                        <div>
-                            <h4 class="text-white font-semibold mb-2 text-sm md:text-base">ویژگی‌ها:</h4>
-                            <ul class="text-gray-400 space-y-1 md:space-y-2 text-sm md:text-base">
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 md:w-5 md:h-5 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                    مقاومت بالا در برابر پارگی
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 md:w-5 md:h-5 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                    مناسب مصارف خانگی و صنعتی
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 md:w-5 md:h-5 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                    کیفیت تضمینی
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="bg-green-500/10 border border-green-500/30 rounded-xl p-4 mb-4">
+                        <h4 class="text-green-400 font-semibold mb-1">مشخصات محصول</h4>
+                        <p class="text-gray-300">مدل: <span class="text-white">سبز – ۳ رول</span></p>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-semibold mb-2">ویژگی‌ها:</h4>
+                        <ul class="text-gray-400 space-y-2">
+                            <li class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                مقاومت بالا در برابر پارگی
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                مناسب مصارف خانگی و صنعتی
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                کیفیت تضمینی
+                            </li>
+                        </ul>
                     </div>
                 `
             },
             'tablecloth': {
                 title: 'سفره یکبار مصرف',
                 images: [
-                    'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450"><rect fill="%231a2332" width="800" height="450"/><text x="400" y="225" text-anchor="middle" fill="%23ff6b35" font-size="24" font-family="Arial">سفره یکبار مصرف - تصویر ۱</text></svg>',
-                    'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450"><rect fill="%231a2332" width="800" height="450"/><text x="400" y="225" text-anchor="middle" fill="%23ff6b35" font-size="24" font-family="Arial">سفره یکبار مصرف - تصویر ۲</text></svg>',
-                    'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450"><rect fill="%231a2332" width="800" height="450"/><text x="400" y="225" text-anchor="middle" fill="%23ff6b35" font-size="24" font-family="Arial">سفره یکبار مصرف - تصویر ۳</text></svg>'
+                    'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400"><rect fill="%231a2332" width="800" height="400"/><text x="400" y="200" text-anchor="middle" fill="%23ff6b35" font-size="20" font-family="Arial">سفره یکبار مصرف - تصویر ۱</text></svg>',
+                    'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400"><rect fill="%231a2332" width="800" height="400"/><text x="400" y="200" text-anchor="middle" fill="%23ff6b35" font-size="20" font-family="Arial">سفره یکبار مصرف - تصویر ۲</text></svg>',
+                    'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400"><rect fill="%231a2332" width="800" height="400"/><text x="400" y="200" text-anchor="middle" fill="%23ff6b35" font-size="20" font-family="Arial">سفره یکبار مصرف - تصویر ۳</text></svg>'
                 ],
                 content: `
-                    <div class="space-y-3">
-                        <div class="bg-orange-500/10 border border-orange-500/30 rounded-xl p-3 md:p-4">
-                            <h4 class="text-orange-400 font-semibold mb-1 md:mb-2 text-sm md:text-base">مدل‌های موجود</h4>
-                            <div class="flex gap-2 md:gap-4 flex-wrap">
-                                <span class="px-2 md:px-3 py-1 bg-white/10 rounded-lg text-white text-xs md:text-sm">سفره ۴۰۰ گرمی</span>
-                                <span class="px-2 md:px-3 py-1 bg-white/10 rounded-lg text-white text-xs md:text-sm">سفره ۱ کیلویی</span>
-                            </div>
+                    <div class="bg-orange-500/10 border border-orange-500/30 rounded-xl p-4 mb-4">
+                        <h4 class="text-orange-400 font-semibold mb-2">مدل‌های موجود</h4>
+                        <div class="flex gap-3 flex-wrap">
+                            <span class="px-3 py-1 bg-white/10 rounded-lg text-white text-sm">سفره ۴۰۰ گرمی</span>
+                            <span class="px-3 py-1 bg-white/10 rounded-lg text-white text-sm">سفره ۱ کیلویی</span>
                         </div>
-                        <div>
-                            <h4 class="text-white font-semibold mb-2 text-sm md:text-base">رنگ‌های موجود:</h4>
-                            <div class="flex flex-wrap gap-1.5 md:gap-2">
-                                <span class="w-6 h-6 md:w-8 md:h-8 rounded-full bg-red-500"></span>
-                                <span class="w-6 h-6 md:w-8 md:h-8 rounded-full bg-blue-500"></span>
-                                <span class="w-6 h-6 md:w-8 md:h-8 rounded-full bg-green-500"></span>
-                                <span class="w-6 h-6 md:w-8 md:h-8 rounded-full bg-yellow-500"></span>
-                                <span class="w-6 h-6 md:w-8 md:h-8 rounded-full bg-purple-500"></span>
-                                <span class="w-6 h-6 md:w-8 md:h-8 rounded-full bg-pink-500"></span>
-                                <span class="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white border border-gray-300"></span>
-                            </div>
-                            <p class="text-gray-400 text-xs md:text-sm mt-1 md:mt-2">همچنین امکان انتخاب «رنگ جور» وجود دارد</p>
+                    </div>
+                    <div class="mb-4">
+                        <h4 class="text-white font-semibold mb-2">رنگ‌های موجود:</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="w-7 h-7 rounded-full bg-red-500"></span>
+                            <span class="w-7 h-7 rounded-full bg-blue-500"></span>
+                            <span class="w-7 h-7 rounded-full bg-green-500"></span>
+                            <span class="w-7 h-7 rounded-full bg-yellow-500"></span>
+                            <span class="w-7 h-7 rounded-full bg-purple-500"></span>
+                            <span class="w-7 h-7 rounded-full bg-pink-500"></span>
+                            <span class="w-7 h-7 rounded-full bg-white border border-gray-300"></span>
                         </div>
-                        <div>
-                            <h4 class="text-white font-semibold mb-1 md:mb-2 text-sm md:text-base">ویژگی‌ها:</h4>
-                            <ul class="text-gray-400 space-y-1 md:space-y-2 text-sm md:text-base">
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 md:w-5 md:h-5 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                    کیفیت عالی و ضخامت مناسب
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 md:w-5 md:h-5 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                    رنگ‌بندی متنوع
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 md:w-5 md:h-5 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                    مناسب مجالس و مهمانی‌ها
-                                </li>
-                            </ul>
-                        </div>
+                        <p class="text-gray-400 text-sm mt-2">همچنین امکان انتخاب «رنگ جور» وجود دارد</p>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-semibold mb-2">ویژگی‌ها:</h4>
+                        <ul class="text-gray-400 space-y-2">
+                            <li class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                کیفیت عالی و ضخامت مناسب
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                رنگ‌بندی متنوع
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                مناسب مجالس و مهمانی‌ها
+                            </li>
+                        </ul>
                     </div>
                 `
             }
         };
 
         // ===== SLIDER STATE =====
-        const sliderState = {
+        let sliderState = {
             currentSlide: 0,
             totalSlides: 0,
+            autoSlideInterval: null,
             isDragging: false,
             startX: 0,
-            currentX: 0,
-            autoSlideInterval: null
+            currentX: 0
         };
 
         function openProductModal(product) {
@@ -1731,21 +1722,16 @@
             document.getElementById('modal-title').textContent = data.title;
             document.getElementById('modal-content').innerHTML = data.content;
             
-            // Setup slider
             const track = document.getElementById('modal-slider-track');
             const dots = document.getElementById('modal-slider-dots');
             
             track.innerHTML = data.images.map(img => `<img src="${img}" class="slider-slide" alt="" draggable="false">`).join('');
             dots.innerHTML = data.images.map((_, i) => `<div class="slider-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`).join('');
             
-            // Reset slider state
             sliderState.currentSlide = 0;
             sliderState.totalSlides = data.images.length;
             
-            // Setup touch/swipe events
             setupSliderTouch();
-            
-            // Start auto-slide
             startAutoSlide();
 
             document.getElementById('product-modal').classList.add('active');
@@ -1754,98 +1740,43 @@
 
         function setupSliderTouch() {
             const slider = document.getElementById('product-slider');
-            const track = document.getElementById('modal-slider-track');
             
-            // Remove old listeners
-            slider.removeEventListener('touchstart', handleTouchStart);
-            slider.removeEventListener('touchmove', handleTouchMove);
-            slider.removeEventListener('touchend', handleTouchEnd);
-            slider.removeEventListener('mousedown', handleMouseDown);
-            
-            // Add new listeners
-            slider.addEventListener('touchstart', handleTouchStart, { passive: true });
-            slider.addEventListener('touchmove', handleTouchMove, { passive: false });
-            slider.addEventListener('touchend', handleTouchEnd);
-            slider.addEventListener('mousedown', handleMouseDown);
-        }
+            slider.ontouchstart = (e) => {
+                sliderState.isDragging = true;
+                sliderState.startX = e.touches[0].clientX;
+                sliderState.currentX = sliderState.startX;
+                stopAutoSlide();
+                document.getElementById('modal-slider-track').classList.add('dragging');
+            };
 
-        function handleTouchStart(e) {
-            sliderState.isDragging = true;
-            sliderState.startX = e.touches[0].clientX;
-            sliderState.currentX = sliderState.startX;
-            stopAutoSlide();
-            document.getElementById('modal-slider-track').classList.add('dragging');
-        }
+            slider.ontouchmove = (e) => {
+                if (!sliderState.isDragging) return;
+                sliderState.currentX = e.touches[0].clientX;
+                const diff = sliderState.currentX - sliderState.startX;
+                const track = document.getElementById('modal-slider-track');
+                const baseTransform = sliderState.currentSlide * 100;
+                const dragPercent = (diff / slider.offsetWidth) * 100;
+                track.style.transform = `translateX(${baseTransform + dragPercent}%)`;
+            };
 
-        function handleTouchMove(e) {
-            if (!sliderState.isDragging) return;
-            sliderState.currentX = e.touches[0].clientX;
-            const diff = sliderState.currentX - sliderState.startX;
-            const track = document.getElementById('modal-slider-track');
-            const baseTransform = sliderState.currentSlide * 100;
-            const dragPercent = (diff / track.parentElement.offsetWidth) * 100;
-            track.style.transform = `translateX(${baseTransform + dragPercent}%)`;
-        }
-
-        function handleTouchEnd(e) {
-            if (!sliderState.isDragging) return;
-            sliderState.isDragging = false;
-            document.getElementById('modal-slider-track').classList.remove('dragging');
-            
-            const diff = sliderState.currentX - sliderState.startX;
-            const threshold = 50;
-            
-            if (diff > threshold && sliderState.currentSlide > 0) {
-                goToSlide(sliderState.currentSlide - 1);
-            } else if (diff < -threshold && sliderState.currentSlide < sliderState.totalSlides - 1) {
-                goToSlide(sliderState.currentSlide + 1);
-            } else {
-                goToSlide(sliderState.currentSlide);
-            }
-            
-            startAutoSlide();
-        }
-
-        function handleMouseDown(e) {
-            sliderState.isDragging = true;
-            sliderState.startX = e.clientX;
-            sliderState.currentX = sliderState.startX;
-            stopAutoSlide();
-            document.getElementById('modal-slider-track').classList.add('dragging');
-            
-            document.addEventListener('mousemove', handleMouseMove);
-            document.addEventListener('mouseup', handleMouseUp);
-        }
-
-        function handleMouseMove(e) {
-            if (!sliderState.isDragging) return;
-            sliderState.currentX = e.clientX;
-            const diff = sliderState.currentX - sliderState.startX;
-            const track = document.getElementById('modal-slider-track');
-            const baseTransform = sliderState.currentSlide * 100;
-            const dragPercent = (diff / track.parentElement.offsetWidth) * 100;
-            track.style.transform = `translateX(${baseTransform + dragPercent}%)`;
-        }
-
-        function handleMouseUp(e) {
-            if (!sliderState.isDragging) return;
-            sliderState.isDragging = false;
-            document.getElementById('modal-slider-track').classList.remove('dragging');
-            
-            const diff = sliderState.currentX - sliderState.startX;
-            const threshold = 50;
-            
-            if (diff > threshold && sliderState.currentSlide > 0) {
-                goToSlide(sliderState.currentSlide - 1);
-            } else if (diff < -threshold && sliderState.currentSlide < sliderState.totalSlides - 1) {
-                goToSlide(sliderState.currentSlide + 1);
-            } else {
-                goToSlide(sliderState.currentSlide);
-            }
-            
-            document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('mouseup', handleMouseUp);
-            startAutoSlide();
+            slider.ontouchend = () => {
+                if (!sliderState.isDragging) return;
+                sliderState.isDragging = false;
+                document.getElementById('modal-slider-track').classList.remove('dragging');
+                
+                const diff = sliderState.currentX - sliderState.startX;
+                const threshold = 50;
+                
+                if (diff > threshold && sliderState.currentSlide > 0) {
+                    goToSlide(sliderState.currentSlide - 1);
+                } else if (diff < -threshold && sliderState.currentSlide < sliderState.totalSlides - 1) {
+                    goToSlide(sliderState.currentSlide + 1);
+                } else {
+                    goToSlide(sliderState.currentSlide);
+                }
+                
+                startAutoSlide();
+            };
         }
 
         function startAutoSlide() {
@@ -1911,46 +1842,34 @@
             const preview = document.getElementById('invoice-preview');
             preview.innerHTML = `
                 <div style="direction: rtl; font-family: 'Vazirmatn', sans-serif;">
-                    <!-- Header -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e5e7eb; padding-bottom: 20px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e5e7eb; padding-bottom: 15px; margin-bottom: 15px;">
                         <div>
-                            <h2 style="font-size: 24px; font-weight: bold; color: #1a1a1a; margin: 0;">رپلاست</h2>
-                            <p style="color: #666; font-size: 14px; margin: 5px 0 0 0;">تولیدکننده محصولات پلاستیکی</p>
+                            <h2 style="font-size: 20px; font-weight: bold; color: #1a1a1a; margin: 0;">رپلاست</h2>
+                            <p style="color: #666; font-size: 12px; margin: 4px 0 0 0;">تولیدکننده محصولات پلاستیکی</p>
                         </div>
                         <div style="text-align: left;">
-                            <p style="color: #666; font-size: 14px; margin: 0;">پیش‌فاکتور</p>
-                            <p style="font-weight: bold; color: #1a1a1a; margin: 5px 0 0 0;">شماره: ${invoiceNumber}</p>
+                            <p style="color: #666; font-size: 12px; margin: 0;">پیش‌فاکتور</p>
+                            <p style="font-weight: bold; color: #1a1a1a; margin: 4px 0 0 0; font-size: 14px;">شماره: ${invoiceNumber}</p>
                         </div>
                     </div>
 
-                    <!-- Customer Info -->
-                    <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-                            <div>
-                                <span style="color: #666; font-size: 14px;">نام خریدار:</span>
-                                <span style="font-weight: 600; color: #1a1a1a; margin-right: 8px;">${name}</span>
-                            </div>
-                            <div>
-                                <span style="color: #666; font-size: 14px;">شماره تماس:</span>
-                                <span style="font-weight: 600; color: #1a1a1a; margin-right: 8px;">${phone}</span>
-                            </div>
-                            <div>
-                                <span style="color: #666; font-size: 14px;">تاریخ:</span>
-                                <span style="font-weight: 600; color: #1a1a1a; margin-right: 8px;">${date}</span>
-                            </div>
+                    <div style="background: #f9fafb; padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 15px; font-size: 13px;">
+                            <div><span style="color: #666;">نام:</span> <span style="font-weight: 600; color: #1a1a1a;">${name}</span></div>
+                            <div><span style="color: #666;">تماس:</span> <span style="font-weight: 600; color: #1a1a1a;">${phone}</span></div>
+                            <div><span style="color: #666;">تاریخ:</span> <span style="font-weight: 600; color: #1a1a1a;">${date}</span></div>
                         </div>
                     </div>
 
-                    <!-- Items Table -->
                     <table class="invoice-table">
                         <thead>
                             <tr>
                                 <th>ردیف</th>
                                 <th>نام کالا</th>
                                 <th>تعداد</th>
-                                <th>قیمت واحد (تومان)</th>
+                                <th>قیمت واحد</th>
                                 <th>تخفیف</th>
-                                <th>جمع (تومان)</th>
+                                <th>جمع</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1958,8 +1877,8 @@
                                 <tr>
                                     <td>${toPersianDigits(i + 1)}</td>
                                     <td>
-                                        <div>${item.name}</div>
-                                        <div style="font-size: 12px; color: #666;">${item.details}</div>
+                                        <div style="font-weight: 600;">${item.name}</div>
+                                        <div style="font-size: 11px; color: #666;">${item.details}</div>
                                     </td>
                                     <td>${toPersianDigits(item.quantity)}</td>
                                     <td>${formatPrice(item.unitPrice)}</td>
@@ -1970,19 +1889,16 @@
                         </tbody>
                     </table>
 
-                    <!-- Total -->
-                    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-                        <div style="background: #fff7ed; padding: 15px 25px; border-radius: 8px; border: 1px solid #fed7aa;">
-                            <span style="color: #666;">جمع کل:</span>
-                            <span style="font-size: 20px; font-weight: bold; color: #ea580c; margin-right: 10px;">${formatPrice(total)} تومان</span>
+                    <div style="display: flex; justify-content: flex-end; margin-top: 15px;">
+                        <div style="background: #fff7ed; padding: 12px 20px; border-radius: 8px; border: 1px solid #fed7aa;">
+                            <span style="color: #666; font-size: 13px;">جمع کل:</span>
+                            <span style="font-size: 18px; font-weight: bold; color: #ea580c; margin-right: 8px;">${formatPrice(total)} تومان</span>
                         </div>
                     </div>
 
-                    <!-- Footer Note -->
-                    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-                        <p style="color: #666; font-size: 12px; text-align: center; margin: 0;">
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e5e7eb;">
+                        <p style="color: #666; font-size: 11px; text-align: center; margin: 0;">
                             این پیش‌فاکتور صرفاً جهت اطلاع از قیمت تقریبی است و فاکتور رسمی محسوب نمی‌شود.
-                            <br>برای ثبت نهایی سفارش با واحد فروش تماس بگیرید.
                         </p>
                     </div>
                 </div>
@@ -2003,7 +1919,6 @@
 
             let isValid = true;
 
-            // Name validation
             if (name.length < 2) {
                 nameInput.classList.add('error');
                 nameInput.classList.remove('valid');
@@ -2015,7 +1930,6 @@
                 nameError.classList.add('hidden');
             }
 
-            // Phone validation
             if (!phoneRegex.test(phone)) {
                 phoneInput.classList.add('error');
                 phoneInput.classList.remove('valid');
@@ -2027,7 +1941,6 @@
                 phoneError.classList.add('hidden');
             }
 
-            // Enable/disable download button
             if (isValid) {
                 downloadBtn.disabled = false;
                 downloadBtn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -2062,11 +1975,9 @@
                 const invoiceNumber = toPersianDigits(Math.floor(Math.random() * 90000 + 10000).toString());
                 const total = state.cart.reduce((sum, item) => sum + item.total, 0);
 
-                // Create print area content
                 const printArea = document.getElementById('invoice-print-area');
                 printArea.innerHTML = `
                     <div style="direction: rtl; font-family: 'Vazirmatn', sans-serif; padding: 40px; background: white;">
-                        <!-- Header -->
                         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #ff6b35; padding-bottom: 25px; margin-bottom: 25px;">
                             <div>
                                 <h1 style="font-size: 32px; font-weight: bold; color: #1a1a1a; margin: 0;">رپلاست</h1>
@@ -2078,27 +1989,16 @@
                             </div>
                         </div>
 
-                        <!-- Customer Info -->
                         <div style="background: #f9fafb; padding: 20px; border-radius: 10px; margin-bottom: 25px;">
                             <table style="width: 100%;">
                                 <tr>
-                                    <td style="padding: 5px 0;">
-                                        <span style="color: #666;">نام خریدار:</span>
-                                        <span style="font-weight: 600; color: #1a1a1a; margin-right: 10px;">${name}</span>
-                                    </td>
-                                    <td style="padding: 5px 0;">
-                                        <span style="color: #666;">شماره تماس:</span>
-                                        <span style="font-weight: 600; color: #1a1a1a; margin-right: 10px;">${phone}</span>
-                                    </td>
-                                    <td style="padding: 5px 0;">
-                                        <span style="color: #666;">تاریخ:</span>
-                                        <span style="font-weight: 600; color: #1a1a1a; margin-right: 10px;">${date}</span>
-                                    </td>
+                                    <td style="padding: 5px 0;"><span style="color: #666;">نام خریدار:</span> <span style="font-weight: 600; color: #1a1a1a; margin-right: 10px;">${name}</span></td>
+                                    <td style="padding: 5px 0;"><span style="color: #666;">شماره تماس:</span> <span style="font-weight: 600; color: #1a1a1a; margin-right: 10px;">${phone}</span></td>
+                                    <td style="padding: 5px 0;"><span style="color: #666;">تاریخ:</span> <span style="font-weight: 600; color: #1a1a1a; margin-right: 10px;">${date}</span></td>
                                 </tr>
                             </table>
                         </div>
 
-                        <!-- Items Table -->
                         <table style="width: 100%; border-collapse: collapse; margin: 25px 0;">
                             <thead>
                                 <tr style="background: #374151;">
@@ -2127,7 +2027,6 @@
                             </tbody>
                         </table>
 
-                        <!-- Total -->
                         <div style="display: flex; justify-content: flex-end; margin-top: 25px;">
                             <div style="background: #fff7ed; padding: 20px 35px; border-radius: 10px; border: 2px solid #ff6b35;">
                                 <span style="color: #666; font-size: 16px;">جمع کل:</span>
@@ -2135,7 +2034,6 @@
                             </div>
                         </div>
 
-                        <!-- Footer -->
                         <div style="margin-top: 40px; padding-top: 25px; border-top: 2px solid #e5e7eb;">
                             <p style="color: #666; font-size: 13px; text-align: center; margin: 0; line-height: 1.8;">
                                 این پیش‌فاکتور صرفاً جهت اطلاع از قیمت تقریبی است و فاکتور رسمی محسوب نمی‌شود.
@@ -2145,11 +2043,9 @@
                     </div>
                 `;
 
-                // Wait for fonts to load
                 await document.fonts.ready;
                 await new Promise(resolve => setTimeout(resolve, 500));
 
-                // Generate canvas
                 const canvas = await html2canvas(printArea, {
                     scale: 2,
                     useCORS: true,
@@ -2157,7 +2053,6 @@
                     backgroundColor: '#ffffff'
                 });
 
-                // Create PDF
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 
@@ -2184,7 +2079,6 @@
             updatePrice();
             renderCart();
 
-            // Close modals on escape
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     closeProductModal();
