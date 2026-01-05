@@ -711,18 +711,18 @@
 
         /* ===== Print Area (Hidden) ===== */
         #invoice-print-area {
-            position: absolute;
-            left: -9999px;
-            top: 0;
-            width: 794px;
-            min-width: 794px;
-            max-width: 794px;
-            background: white;
-            direction: rtl;
-            z-index: -1;
+            position: fixed !important;
+            left: -10000px !important;
+            top: 0 !important;
+            width: 794px !important;
+            min-width: 794px !important;
+            max-width: 794px !important;
+            background: white !important;
+            direction: rtl !important;
+            z-index: -1 !important;
             visibility: hidden;
-            pointer-events: none;
-            overflow: visible;
+            pointer-events: none !important;
+            overflow: visible !important;
         }
 
         /* ===== Header Cart Badge ===== */
@@ -2222,12 +2222,13 @@
                 
                 // Make print area visible for html2canvas (it cannot render hidden elements)
                 printArea.style.visibility = 'visible';
-                printArea.style.position = 'absolute';
-                printArea.style.left = '-9999px';
+                printArea.style.position = 'fixed';
+                printArea.style.left = '-10000px';
                 printArea.style.top = '0';
                 printArea.style.zIndex = '-1';
                 printArea.style.width = '794px';
                 printArea.style.minWidth = '794px';
+                printArea.style.maxWidth = '794px';
                 printArea.style.overflow = 'visible';
                 
                 await new Promise(resolve => setTimeout(resolve, 500));
@@ -2237,7 +2238,7 @@
                     useCORS: true,
                     logging: false,
                     backgroundColor: '#ffffff',
-                    windowWidth: 794,
+                    windowWidth: 1200,
                     width: 794
                 });
 
