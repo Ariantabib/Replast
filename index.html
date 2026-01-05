@@ -2166,45 +2166,43 @@
                         </div>
 
                         <div style="background: #f9fafb; padding: 20px; border-radius: 10px; margin-bottom: 25px;">
-                            <table style="width: 100%;">
-                                <tr>
-                                    <td style="padding: 5px 0;"><span style="color: #666;">نام خریدار:</span> <span style="font-weight: 600; color: #1a1a1a; margin-right: 10px;">${name}</span></td>
-                                    <td style="padding: 5px 0;"><span style="color: #666;">شماره تماس:</span> <span style="font-weight: 600; color: #1a1a1a; margin-right: 10px;">${phoneShown}</span></td>
-                                    <td style="padding: 5px 0;"><span style="color: #666;">تاریخ:</span> <span style="font-weight: 600; color: #1a1a1a; margin-right: 10px;">${date}</span></td>
-                                </tr>
-                            </table>
+                            <div style="display: flex; justify-content: space-between; width: 100%; flex-wrap: wrap; gap: 10px;">
+                                <div style="padding: 5px 0;"><span style="color: #666;">نام خریدار:</span> <span style="font-weight: 600; color: #1a1a1a; margin-right: 10px;">${name}</span></div>
+                                <div style="padding: 5px 0;"><span style="color: #666;">شماره تماس:</span> <span style="font-weight: 600; color: #1a1a1a; margin-right: 10px;">${phoneShown}</span></div>
+                                <div style="padding: 5px 0;"><span style="color: #666;">تاریخ:</span> <span style="font-weight: 600; color: #1a1a1a; margin-right: 10px;">${date}</span></div>
+                            </div>
                         </div>
 
-                        <table style="width: 100%; border-collapse: collapse; margin: 25px 0;">
+                        <table style="width: 100%; border-collapse: collapse; margin: 25px 0; table-layout: fixed;">
                             <thead>
                                 <tr style="background: #374151;">
-                                    <th style="padding: 15px 12px; border: 1px solid #4b5563; color: white; text-align: right;">ردیف</th>
-                                    <th style="padding: 15px 12px; border: 1px solid #4b5563; color: white; text-align: right;">نام کالا</th>
-                                    <th style="padding: 15px 12px; border: 1px solid #4b5563; color: white; text-align: right;">تعداد</th>
-                                    <th style="padding: 15px 12px; border: 1px solid #4b5563; color: white; text-align: right;">قیمت واحد</th>
-                                    <th style="padding: 15px 12px; border: 1px solid #4b5563; color: white; text-align: right;">تخفیف</th>
-                                    <th style="padding: 15px 12px; border: 1px solid #4b5563; color: white; text-align: right;">جمع</th>
+                                    <th style="width: 6%; padding: 15px 8px; border: 1px solid #4b5563; color: white; text-align: right; vertical-align: middle;">ردیف</th>
+                                    <th style="width: 34%; padding: 15px 8px; border: 1px solid #4b5563; color: white; text-align: right; vertical-align: middle;">نام کالا</th>
+                                    <th style="width: 10%; padding: 15px 8px; border: 1px solid #4b5563; color: white; text-align: right; vertical-align: middle;">تعداد</th>
+                                    <th style="width: 18%; padding: 15px 8px; border: 1px solid #4b5563; color: white; text-align: right; vertical-align: middle;">قیمت واحد</th>
+                                    <th style="width: 10%; padding: 15px 8px; border: 1px solid #4b5563; color: white; text-align: right; vertical-align: middle;">تخفیف</th>
+                                    <th style="width: 22%; padding: 15px 8px; border: 1px solid #4b5563; color: white; text-align: right; vertical-align: middle;">جمع</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 ${state.cart.map((item, i) => `
                                     <tr style="background: ${i % 2 === 0 ? '#f9fafb' : '#ffffff'};">
-                                        <td style="padding: 14px 12px; border: 1px solid #e5e7eb; color: #1a1a1a;">${toPersianDigits(i + 1)}</td>
-                                        <td style="padding: 14px 12px; border: 1px solid #e5e7eb; color: #1a1a1a;">
+                                        <td style="padding: 12px 8px; border: 1px solid #e5e7eb; color: #1a1a1a; vertical-align: middle; text-align: center;">${toPersianDigits(i + 1)}</td>
+                                        <td style="padding: 12px 8px; border: 1px solid #e5e7eb; color: #1a1a1a; vertical-align: middle;">
                                             <div style="font-weight: 600;">${item.name}</div>
-                                            <div style="font-size: 13px; color: #666; margin-top: 4px;">${item.details}</div>
+                                            <div style="font-size: 12px; color: #666; margin-top: 3px;">${item.details}</div>
                                         </td>
-                                        <td style="padding: 14px 12px; border: 1px solid #e5e7eb; color: #1a1a1a;">${toPersianDigits(item.quantity)}</td>
-                                        <td style="padding: 14px 12px; border: 1px solid #e5e7eb; color: #1a1a1a;">${formatPrice(item.unitPrice)} تومان</td>
-                                        <td style="padding: 14px 12px; border: 1px solid #e5e7eb; color: ${item.discount > 0 ? '#16a34a' : '#1a1a1a'};">${item.discount > 0 ? toPersianDigits(item.discount) + '٪' : '—'}</td>
-                                        <td style="padding: 14px 12px; border: 1px solid #e5e7eb; color: #1a1a1a; font-weight: 600;">${formatPrice(item.total)} تومان</td>
+                                        <td style="padding: 12px 8px; border: 1px solid #e5e7eb; color: #1a1a1a; vertical-align: middle; text-align: center;">${toPersianDigits(item.quantity)}</td>
+                                        <td style="padding: 12px 8px; border: 1px solid #e5e7eb; color: #1a1a1a; vertical-align: middle;">${formatPrice(item.unitPrice)} تومان</td>
+                                        <td style="padding: 12px 8px; border: 1px solid #e5e7eb; color: ${item.discount > 0 ? '#16a34a' : '#1a1a1a'}; vertical-align: middle; text-align: center;">${item.discount > 0 ? toPersianDigits(item.discount) + '٪' : '—'}</td>
+                                        <td style="padding: 12px 8px; border: 1px solid #e5e7eb; color: #1a1a1a; font-weight: 600; vertical-align: middle;">${formatPrice(item.total)} تومان</td>
                                     </tr>
                                 `).join('')}
                             </tbody>
                         </table>
 
-                        <div style="display: flex; justify-content: flex-end; margin-top: 25px;">
-                            <div style="background: #fff7ed; padding: 20px 35px; border-radius: 10px; border: 2px solid #ff6b35;">
+                        <div style="display: flex; justify-content: flex-start; margin-top: 25px;">
+                            <div style="background: #fff7ed; padding: 20px 35px; border-radius: 10px; border: 2px solid #ff6b35; margin-right: auto; margin-left: 0;">
                                 <span style="color: #666; font-size: 16px;">جمع کل:</span>
                                 <span style="font-size: 26px; font-weight: bold; color: #ea580c; margin-right: 15px;">${formatPrice(total)} تومان</span>
                             </div>
