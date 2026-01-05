@@ -715,13 +715,14 @@
             left: -9999px;
             top: 0;
             width: 794px;
+            min-width: 794px;
+            max-width: 794px;
             background: white;
-            padding: 40px;
             direction: rtl;
             z-index: -1;
             visibility: hidden;
             pointer-events: none;
-            overflow: hidden;
+            overflow: visible;
         }
 
         /* ===== Header Cart Badge ===== */
@@ -2229,6 +2230,9 @@
                 printArea.style.left = '-9999px';
                 printArea.style.top = '0';
                 printArea.style.zIndex = '-1';
+                printArea.style.width = '794px';
+                printArea.style.minWidth = '794px';
+                printArea.style.overflow = 'visible';
                 
                 await new Promise(resolve => setTimeout(resolve, 500));
 
