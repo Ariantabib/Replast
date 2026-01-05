@@ -75,7 +75,6 @@
             direction: rtl !important;
         }
 
-        /* Samsung Browser RTL fix for fixed elements - use direction:ltr on fixed containers */
         /* Prevent any horizontal overflow */
         *, *::before, *::after {
             max-width: 100vw;
@@ -340,7 +339,6 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
-            /* Fix for Samsung Browser RTL */
             margin: 0;
             direction: ltr !important;
         }
@@ -577,8 +575,58 @@
             font-size: 0.85rem;
             font-weight: 600;
             display: inline-flex;
-            align-items: center;
+            items: center;
             gap: 6px;
+        }
+
+        /* ===== Hero Slider Styles ===== */
+        .hero-slider {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .hero-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s ease-in-out;
+        }
+
+        .hero-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Mobile images are hidden by default, shown only on mobile media query */
+        .hero-slide .mobile-img {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .hero-slide .desktop-img {
+                display: none;
+            }
+            .hero-slide .mobile-img {
+                display: block;
+            }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(15, 20, 25, 0.3), rgba(15, 20, 25, 0.8));
+            z-index: 1;
         }
 
         /* ===== Image Slider ===== */
@@ -587,7 +635,7 @@
             overflow: hidden;
             border-radius: 0;
             touch-action: pan-y pinch-zoom;
-            direction: ltr; /* important for consistent slider behavior across browsers */
+            direction: ltr;
         }
 
         .slider-track {
@@ -724,7 +772,6 @@
             visibility: hidden;
             pointer-events: none !important;
             overflow: visible !important;
-            /* Force desktop-like rendering even on mobile */
             transform: none !important;
             -webkit-transform: none !important;
             font-size: 16px !important;
@@ -775,11 +822,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style="direction: rtl;">
             <div class="flex items-center justify-between h-16 lg:h-20">
                 <!-- Logo -->
-                <!-- Logo -->
-<div class="flex items-center gap-3">
-    <img src="images/logo.png" alt="رپلاست" class="h-18 lg:h-24 w-auto">
-    <span class="text-xl lg:text-2xl font-bold text-white">رپلاست</span>
-</div>
+                <div class="flex items-center gap-3">
+                    <!-- Change #3: Added onclick to scroll to hero -->
+                    <img src="images/logo.png" alt="رپلاست" class="h-12 lg:h-16 w-auto cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <!-- Change #1: Removed text logo next to image -->
+                </div>
 
                 <!-- Desktop Navigation -->
                 <nav class="hidden md:flex items-center gap-6">
@@ -822,20 +869,33 @@
 
     <!-- ===== HERO SECTION ===== -->
     <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <!-- Background -->
-        <div class="absolute inset-0">
-            <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
-            <div class="absolute inset-0 opacity-30">
-                <div class="absolute top-20 right-20 w-72 h-72 bg-orange-500/20 rounded-full blur-3xl animate-pulse"></div>
-                <div class="absolute bottom-20 left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+        <!-- Change #2: New Hero Slider Implementation -->
+        <div class="hero-slider">
+            <div class="hero-track" id="hero-track">
+                <!-- Slide 1 -->
+                <div class="hero-slide">
+                    <img src="images/hero-desktop-1.jpg" alt="Hero 1" class="desktop-img">
+                    <img src="images/hero-mobile-1.jpg" alt="Hero 1 Mobile" class="mobile-img">
+                </div>
+                <!-- Slide 2 -->
+                <div class="hero-slide">
+                    <img src="images/hero-desktop-2.jpg" alt="Hero 2" class="desktop-img">
+                    <img src="images/hero-mobile-2.jpg" alt="Hero 2 Mobile" class="mobile-img">
+                </div>
+                <!-- Slide 3 -->
+                <div class="hero-slide">
+                    <img src="images/hero-desktop-3.jpg" alt="Hero 3" class="desktop-img">
+                    <img src="images/hero-mobile-3.jpg" alt="Hero 3 Mobile" class="mobile-img">
+                </div>
             </div>
-            <!-- Grid Pattern -->
-            <div class="absolute inset-0 opacity-5" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 50px 50px;"></div>
         </div>
 
-        <div class="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="hero-overlay"></div>
+
+        <div class="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center pointer-events-none">
+            <!-- pointer-events-none allows clicking through empty areas, but we need to re-enable for buttons -->
             <div class="animate-fade-in-up" style="animation-delay: 0.2s;">
-                <span class="inline-block px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium mb-6">
+                <span class="inline-block px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium mb-6 pointer-events-auto">
                     تولیدکننده محصولات پلاستیکی با کیفیت
                 </span>
             </div>
@@ -849,11 +909,11 @@
                 رپلاست با سال‌ها تجربه در تولید محصولات پلاستیکی، همراه مطمئن کسب‌وکار شماست. کیفیت را با قیمت شفاف تجربه کنید.
             </p>
 
-            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style="animation-delay: 0.8s;">
+            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up pointer-events-auto" style="animation-delay: 0.8s;">
                 <a href="#products" class="btn-primary text-lg px-8 py-4">
                     مشاهده محصولات
                 </a>
-                <a href="tel:+989123456789" class="btn-secondary text-lg px-8 py-4 flex items-center justify-center gap-2">
+                <a href="tel:+989129251003" class="btn-secondary text-lg px-8 py-4 flex items-center justify-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                     </svg>
@@ -863,7 +923,7 @@
         </div>
 
         <!-- Scroll Indicator -->
-        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
             <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
             </svg>
@@ -1109,7 +1169,8 @@
                         <h3 class="text-2xl font-bold text-white mb-8">راه‌های ارتباطی</h3>
 
                         <div class="space-y-4">
-                            <a href="tel:+989123456789" class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-orange-500/10 transition-all group">
+                            <!-- Change #4: Updated Phone Number -->
+                            <a href="tel:+989129251003" class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-orange-500/10 transition-all group">
                                 <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center group-hover:bg-orange-500/30 transition-all flex-shrink-0">
                                     <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
@@ -1117,11 +1178,12 @@
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-sm">شماره تماس</p>
-                                    <p class="text-white font-semibold">۰۹۱۲ ۳۴۵ ۶۷۸۹</p>
+                                    <p class="text-white font-semibold">۰۹۱۲ ۹۲۵ ۱۰۰۳</p>
                                 </div>
                             </a>
 
-                            <a href="https://wa.me/989123456789" target="_blank" rel="noopener" class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-green-500/10 transition-all group">
+                            <!-- Change #4: Updated WhatsApp Link -->
+                            <a href="https://wa.me/989129251003" target="_blank" rel="noopener" class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-green-500/10 transition-all group">
                                 <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center group-hover:bg-green-500/30 transition-all flex-shrink-0">
                                     <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -1133,7 +1195,8 @@
                                 </div>
                             </a>
 
-                            <a href="https://t.me/replast" target="_blank" rel="noopener" class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-blue-500/10 transition-all group">
+                            <!-- Change #5: Updated Telegram Link and Text -->
+                            <a href="https://t.me/irani_plastic" target="_blank" rel="noopener" class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-blue-500/10 transition-all group">
                                 <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center group-hover:bg-blue-500/30 transition-all flex-shrink-0">
                                     <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
@@ -1141,11 +1204,12 @@
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-sm">تلگرام</p>
-                                    <p class="text-white font-semibold">@replast</p>
+                                    <p class="text-white font-semibold">چنل تلگرام</p>
                                 </div>
                             </a>
 
-                            <a href="https://instagram.com/replast" target="_blank" rel="noopener" class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-pink-500/10 transition-all group">
+                            <!-- Change #6: Updated Instagram Link and Text -->
+                            <a href="https://instagram.com/irani_plastic" target="_blank" rel="noopener" class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-pink-500/10 transition-all group">
                                 <div class="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center group-hover:bg-pink-500/30 transition-all flex-shrink-0">
                                     <svg class="w-6 h-6 text-pink-400" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
@@ -1153,7 +1217,7 @@
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-sm">اینستاگرام</p>
-                                    <p class="text-white font-semibold">@replast</p>
+                                    <p class="text-white font-semibold">پیج اینستاگرام</p>
                                 </div>
                             </a>
                         </div>
@@ -1223,22 +1287,25 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="flex items-center gap-3">
-    <img src="images/logo.png" alt="رپلاست" class="w-10 h-10 rounded-xl">
-    <span class="text-xl font-bold text-white">رپلاست</span>
-</div>
+                    <img src="images/logo.png" alt="رپلاست" class="w-10 h-10 rounded-xl">
+                    <span class="text-xl font-bold text-white">رپلاست</span>
+                </div>
 
                 <div class="flex items-center gap-4">
-                    <a href="https://wa.me/989123456789" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-green-500/20 hover:text-green-400 transition-all" aria-label="واتساپ">
+                    <!-- Change #4: Update WhatsApp Footer Link -->
+                    <a href="https://wa.me/989129251003" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-green-500/20 hover:text-green-400 transition-all" aria-label="واتساپ">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                         </svg>
                     </a>
-                    <a href="https://t.me/replast" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-blue-500/20 hover:text-blue-400 transition-all" aria-label="تلگرام">
+                    <!-- Change #5: Update Telegram Footer Link -->
+                    <a href="https://t.me/irani_plastic" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-blue-500/20 hover:text-blue-400 transition-all" aria-label="تلگرام">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
                         </svg>
                     </a>
-                    <a href="https://instagram.com/replast" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-pink-500/20 hover:text-pink-400 transition-all" aria-label="اینستاگرام">
+                    <!-- Change #6: Update Instagram Footer Link -->
+                    <a href="https://instagram.com/irani_plastic" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-pink-500/20 hover:text-pink-400 transition-all" aria-label="اینستاگرام">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
                         </svg>
@@ -1252,17 +1319,20 @@
 
     <!-- ===== FLOATING CONTACT BUTTONS (Mobile) ===== -->
     <div class="floating-contacts md:hidden">
-        <a href="https://wa.me/989123456789" class="floating-btn whatsapp" title="واتساپ" aria-label="واتساپ">
+        <!-- Change #4: Update WhatsApp Floating Button -->
+        <a href="https://wa.me/989129251003" class="floating-btn whatsapp" title="واتساپ" aria-label="واتساپ">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
             </svg>
         </a>
-        <a href="https://t.me/replast" class="floating-btn telegram" title="تلگرام" aria-label="تلگرام">
+        <!-- Change #5: Update Telegram Floating Button -->
+        <a href="https://t.me/irani_plastic" class="floating-btn telegram" title="تلگرام" aria-label="تلگرام">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
             </svg>
         </a>
-        <a href="tel:+989123456789" class="floating-btn phone" title="تماس" aria-label="تماس">
+        <!-- Change #4: Update Phone Floating Button -->
+        <a href="tel:+989129251003" class="floating-btn phone" title="تماس" aria-label="تماس">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
             </svg>
@@ -1984,6 +2054,45 @@
             stopAutoSlide();
         }
 
+        // ===== HERO SLIDER LOGIC (New) =====
+        let heroState = {
+            currentIndex: 0,
+            totalSlides: 3,
+            interval: null
+        };
+
+        function initHeroSlider() {
+            const track = document.getElementById('hero-track');
+            if (!track) return;
+            
+            // Start Auto Slide
+            startHeroAutoSlide();
+        }
+
+        function nextHeroSlide() {
+            heroState.currentIndex = (heroState.currentIndex + 1) % heroState.totalSlides;
+            updateHeroPosition();
+        }
+
+        function updateHeroPosition() {
+            const track = document.getElementById('hero-track');
+            if (track) {
+                track.style.transform = `translateX(-${heroState.currentIndex * 100}%)`;
+            }
+        }
+
+        function startHeroAutoSlide() {
+            stopHeroAutoSlide();
+            heroState.interval = setInterval(nextHeroSlide, 5000); // Change every 5 seconds
+        }
+
+        function stopHeroAutoSlide() {
+            if (heroState.interval) {
+                clearInterval(heroState.interval);
+                heroState.interval = null;
+            }
+        }
+
         // ===== INVOICE MODAL =====
         function openInvoiceModal() {
             if (state.cart.length === 0) {
@@ -2214,7 +2323,7 @@
                         <div style="margin-top: 40px; padding-top: 25px; border-top: 2px solid #e5e7eb;">
                             <p style="color: #666; font-size: 13px; text-align: center; margin: 0; line-height: 1.8;">
                                 این پیش‌فاکتور صرفاً جهت اطلاع از قیمت تقریبی است و فاکتور رسمی محسوب نمی‌شود.
-                                <br>برای ثبت نهایی سفارش با واحد فروش تماس بگیرید: ۰۹۱۲ ۳۴۵ ۶۷۸۹
+                                <br>برای ثبت نهایی سفارش با واحد فروش تماس بگیرید: ۰۹۱۲ ۹۲۵ ۱۰۰۳
                             </p>
                         </div>
                     </div>
@@ -2374,6 +2483,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             updatePrice();
             renderCart();
+            initHeroSlider(); // Init Hero Slider
 
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
