@@ -49,6 +49,9 @@
         html {
             scroll-behavior: smooth;
             background: var(--color-bg-primary) !important;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
         }
 
         body {
@@ -58,6 +61,16 @@
             color: var(--color-text-primary) !important;
             min-height: 100vh;
             overflow-x: hidden;
+            /* Fix for Samsung Browser - prevent horizontal scroll issues with fixed elements */
+            position: relative;
+            width: 100%;
+        }
+
+        /* Samsung Browser RTL fix for fixed elements */
+        html[dir="rtl"] [style*="position: fixed"],
+        html[dir="rtl"] .fixed {
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
 
         /* ===== Glassmorphism ===== */
@@ -300,6 +313,8 @@
             position: fixed;
             top: 0;
             left: 0;
+            right: 0;
+            bottom: 0;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
@@ -313,6 +328,10 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
+            /* Fix for Samsung Browser RTL */
+            margin: 0;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
 
         .modal-overlay.active {
@@ -505,10 +524,13 @@
             position: fixed;
             bottom: 20px;
             left: 20px;
+            right: auto;
             z-index: 90;
             display: flex;
             flex-direction: column;
             gap: 10px;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
 
         .floating-btn {
@@ -676,13 +698,16 @@
 
         /* ===== Print Area (Hidden) ===== */
         #invoice-print-area {
-            position: absolute;
+            position: fixed;
             left: -9999px;
             top: 0;
             width: 794px;
             background: white;
             padding: 40px;
             direction: rtl;
+            z-index: -1;
+            visibility: hidden;
+            pointer-events: none;
         }
 
         /* ===== Header Cart Badge ===== */
@@ -715,7 +740,7 @@
 </head>
 <body>
     <!-- ===== HEADER ===== -->
-    <header id="header" class="glass fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <header id="header" class="glass fixed top-0 inset-x-0 z-50 transition-all duration-300" style="left: 0; right: 0;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16 lg:h-20">
                 <!-- Logo -->
@@ -1701,7 +1726,8 @@
         // ===== NOTIFICATION =====
         function showNotification(message) {
             const notification = document.createElement('div');
-            notification.className = 'fixed top-20 left-4 right-4 md:left-auto md:right-4 md:w-80 bg-green-500/90 text-white px-6 py-4 rounded-xl shadow-lg z-[1001] animate-fade-in flex items-center gap-3';
+            notification.className = 'fixed top-20 bg-green-500/90 text-white px-6 py-4 rounded-xl shadow-lg z-[1001] animate-fade-in flex items-center gap-3';
+            notification.style.cssText = 'left: 16px; right: 16px; max-width: 320px; margin: 0 auto; transform: translateZ(0);';
             notification.innerHTML = `
                 <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
