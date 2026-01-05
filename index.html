@@ -6,6 +6,7 @@
     <meta name="color-scheme" content="dark only">
     <meta name="theme-color" content="#0f1419">
     <title>رپلاست | تولیدکننده محصولات پلاستیکی</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
 
     <!-- Tailwind CSS (required) -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -774,12 +775,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style="direction: rtl;">
             <div class="flex items-center justify-between h-16 lg:h-20">
                 <!-- Logo -->
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center animate-float">
-                        <span class="text-white font-bold text-lg lg:text-xl">ر</span>
-                    </div>
-                    <span class="text-xl lg:text-2xl font-bold text-white">رپلاست</span>
-                </div>
+                <!-- Logo -->
+<div class="flex items-center gap-3">
+    <img src="images/logo.png" alt="رپلاست" class="w-10 h-10 lg:w-12 lg:h-12 rounded-xl animate-float">
+    <span class="text-xl lg:text-2xl font-bold text-white">رپلاست</span>
+</div>
 
                 <!-- Desktop Navigation -->
                 <nav class="hidden md:flex items-center gap-6">
@@ -883,11 +883,7 @@
                 <div class="product-card">
                     <div class="product-card-image">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent z-10"></div>
-                        <div class="w-full h-full bg-gradient-to-br from-orange-900/50 to-slate-800 flex items-center justify-center">
-                            <svg class="w-24 h-24 text-orange-500/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
-                            </svg>
-                        </div>
+                        <img src="images/products/tablecloth-card.jpg" alt="سفره یکبار مصرف" class="w-full h-full object-cover">
                         <div class="absolute bottom-4 right-4 z-20">
                             <span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-sm font-medium">۴۰۰ گرمی و ۱ کیلویی</span>
                         </div>
@@ -910,11 +906,7 @@
                 <div class="product-card">
                     <div class="product-card-image">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent z-10"></div>
-                        <div class="w-full h-full bg-gradient-to-br from-green-900/50 to-slate-800 flex items-center justify-center">
-                            <svg class="w-24 h-24 text-green-500/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                            </svg>
-                        </div>
+                        <img src="images/products/garbage-bag-card.jpg" alt="کیسه زباله" class="w-full h-full object-cover">
                         <div class="absolute bottom-4 right-4 z-20">
                             <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm font-medium">سبز – ۳ رول</span>
                         </div>
@@ -1231,11 +1223,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
-                        <span class="text-white font-bold text-lg">ر</span>
-                    </div>
-                    <span class="text-xl font-bold text-white">رپلاست</span>
-                </div>
+    <img src="images/logo.png" alt="رپلاست" class="w-10 h-10 rounded-xl">
+    <span class="text-xl font-bold text-white">رپلاست</span>
+</div>
 
                 <div class="flex items-center gap-4">
                     <a href="https://wa.me/989123456789" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-green-500/20 hover:text-green-400 transition-all" aria-label="واتساپ">
@@ -1791,12 +1781,12 @@
         }
 
         const productData = {
-            'garbage-bag': {
-                title: 'کیسه زباله',
-                images: [
-                    makeSvgDataUri('کیسه زباله - تصویر ۱', '#22c55e'),
-                    makeSvgDataUri('کیسه زباله - تصویر ۲', '#22c55e')
-                ],
+    'garbage-bag': {
+        title: 'کیسه زباله',
+        images: [
+            'images/products/garbage-bag-1.jpg',
+            'images/products/garbage-bag-2.jpg'
+        ],
                 content: `
                     <div class="bg-green-500/10 border border-green-500/30 rounded-xl p-4 mb-4">
                         <h4 class="text-green-400 font-semibold mb-1">مشخصات محصول</h4>
@@ -1822,12 +1812,12 @@
                 `
             },
             'tablecloth': {
-                title: 'سفره یکبار مصرف',
-                images: [
-                    makeSvgDataUri('سفره یکبار مصرف - تصویر ۱', '#ff6b35'),
-                    makeSvgDataUri('سفره یکبار مصرف - تصویر ۲', '#ff6b35'),
-                    makeSvgDataUri('سفره یکبار مصرف - تصویر ۳', '#ff6b35')
-                ],
+    title: 'سفره یکبار مصرف',
+    images: [
+        'images/products/tablecloth-1.jpg',
+        'images/products/tablecloth-2.jpg',
+        'images/products/tablecloth-3.jpg'
+    ],
                 content: `
                     <div class="bg-orange-500/10 border border-orange-500/30 rounded-xl p-4 mb-4">
                         <h4 class="text-orange-400 font-semibold mb-2">مدل‌های موجود</h4>
