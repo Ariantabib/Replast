@@ -2222,13 +2222,23 @@
                 if (document.fonts && document.fonts.ready) {
                     await document.fonts.ready;
                 }
-                await new Promise(resolve => setTimeout(resolve, 400));
+                
+                // Make print area visible for html2canvas (it cannot render hidden elements)
+                printArea.style.visibility = 'visible';
+                printArea.style.position = 'absolute';
+                printArea.style.left = '-9999px';
+                printArea.style.top = '0';
+                printArea.style.zIndex = '-1';
+                
+                await new Promise(resolve => setTimeout(resolve, 500));
 
                 const canvas = await html2canvas(printArea, {
                     scale: 2,
                     useCORS: true,
                     logging: false,
-                    backgroundColor: '#ffffff'
+                    backgroundColor: '#ffffff',
+                    windowWidth: 794,
+                    width: 794
                 });
 
                 const { jsPDF } = window.jspdf;
@@ -2239,6 +2249,9 @@
 
                 pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, imgWidth, imgHeight);
                 pdf.save(`پیش‌فاکتور-رپلاست-${invoiceNumber}.pdf`);
+                
+                // Hide print area again
+                printArea.style.visibility = 'hidden';
 
                 showNotification('پیش‌فاکتور با موفقیت دانلود شد');
                 closeInvoiceModal();
@@ -2246,6 +2259,9 @@
             } catch (error) {
                 console.error('PDF generation error:', error);
                 showNotification('خطا در تولید PDF. لطفاً دوباره تلاش کنید.');
+                // Hide print area on error too
+                const printArea = document.getElementById('invoice-print-area');
+                if (printArea) printArea.style.visibility = 'hidden';
             } finally {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
