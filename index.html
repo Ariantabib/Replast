@@ -2267,13 +2267,20 @@
                     windowWidth: 1200,
                     width: 794,
                     onclone: function(clonedDoc) {
-                        // Ensure cloned element is visible
+                        // Ensure cloned element is visible with full opacity
                         const clonedArea = clonedDoc.getElementById('invoice-print-area');
                         if (clonedArea) {
                             clonedArea.style.visibility = 'visible';
+                            clonedArea.style.opacity = '1';
                             clonedArea.style.position = 'absolute';
                             clonedArea.style.left = '0';
                             clonedArea.style.top = '0';
+                            clonedArea.style.zIndex = '1';
+                            // Ensure all child elements have full opacity
+                            const allElements = clonedArea.querySelectorAll('*');
+                            allElements.forEach(el => {
+                                el.style.opacity = '1';
+                            });
                         }
                     }
                 });
