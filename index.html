@@ -723,6 +723,21 @@
             visibility: hidden;
             pointer-events: none !important;
             overflow: visible !important;
+            /* Force desktop-like rendering even on mobile */
+            transform: none !important;
+            -webkit-transform: none !important;
+            font-size: 16px !important;
+            line-height: 1.5 !important;
+        }
+        
+        #invoice-print-area * {
+            max-width: none !important;
+            box-sizing: border-box !important;
+        }
+        
+        #invoice-print-area table {
+            width: 100% !important;
+            table-layout: fixed !important;
         }
 
         /* ===== Header Cart Badge ===== */
@@ -2249,7 +2264,17 @@
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
                 pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, imgWidth, imgHeight);
-                pdf.save(`پیش‌فاکتور-رپلاست-${invoiceNumber}.pdf`);
+                
+                // Use Blob method for better mobile Chrome compatibility
+                const pdfBlob = pdf.output('blob');
+                const blobUrl = URL.createObjectURL(pdfBlob);
+                const downloadLink = document.createElement('a');
+                downloadLink.href = blobUrl;
+                downloadLink.download = `پیش‌فاکتور-رپلاست-${invoiceNumber}.pdf`;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                URL.revokeObjectURL(blobUrl);
                 
                 // Hide print area again
                 printArea.style.visibility = 'hidden';
