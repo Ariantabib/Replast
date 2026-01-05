@@ -2271,10 +2271,18 @@
                 const downloadLink = document.createElement('a');
                 downloadLink.href = blobUrl;
                 downloadLink.download = `پیش‌فاکتور-رپلاست-${invoiceNumber}.pdf`;
+                downloadLink.style.display = 'none';
                 document.body.appendChild(downloadLink);
+                
+                // Small delay for Chrome mobile compatibility
+                await new Promise(resolve => setTimeout(resolve, 100));
                 downloadLink.click();
-                document.body.removeChild(downloadLink);
-                URL.revokeObjectURL(blobUrl);
+                
+                // Cleanup after a delay to ensure download starts
+                setTimeout(() => {
+                    document.body.removeChild(downloadLink);
+                    URL.revokeObjectURL(blobUrl);
+                }, 1000);
                 
                 // Hide print area again
                 printArea.style.visibility = 'hidden';
