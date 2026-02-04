@@ -6,7 +6,7 @@
     <meta name="color-scheme" content="dark only">
     <meta name="theme-color" content="#0f1419">
     
-    <!-- Change #1: SEO Meta Tags -->
+    <!-- SEO Meta Tags -->
     <title>رپلاست | تولیدکننده سفره یکبار مصرف و کیسه زباله</title>
     <meta name="description" content="تولیدکننده انواع سفره یکبار مصرف در وزن‌های مختلف و کیسه زباله با بالاترین کیفیت و قیمت رقابتی. ارسال سراسری به سراسر ایران. تماس: ۰۹۱۲۹۲۵۱۰۳">
     
@@ -19,7 +19,7 @@
 
     <link rel="icon" type="image/png" href="images/favicon.png">
 
-    <!-- Change #4: Font Preconnect -->
+    <!-- Font Preconnect -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     
     <!-- Tailwind CSS (required) -->
@@ -1003,12 +1003,12 @@
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent z-10"></div>
                         <img src="images/products/tablecloth-card.jpg" alt="سفره یکبار مصرف" class="w-full h-full object-cover">
                         <div class="absolute bottom-4 right-4 z-20">
-                            <span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-sm font-medium">۴۰۰ گرمی و ۱ کیلویی</span>
+                            <span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-sm font-medium">۴۰۰ گرمی، ۱ و ۲ کیلویی</span>
                         </div>
                     </div>
                     <div class="p-6">
                         <h3 class="text-2xl font-bold text-white mb-2">سفره یکبار مصرف</h3>
-                        <p class="text-gray-400 mb-6">سفره یکبار مصرف در دو وزن مختلف با تنوع رنگ‌بندی جذاب</p>
+                        <p class="text-gray-400 mb-6">سفره یکبار مصرف در وزن‌های مختلف با تنوع رنگ‌بندی جذاب و امکان سفارش سایزهای خاص</p>
                         <div class="flex gap-3">
                             <button onclick="openProductModal('tablecloth')" class="btn-secondary flex-1">
                                 اطلاعات بیشتر
@@ -1074,6 +1074,10 @@
                                 </button>
                                 <button onclick="selectWeight('1000')" id="weight-1000" class="flex-1 min-w-[120px] py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-white/5 text-gray-400 border-2 border-transparent hover:border-white/20">
                                     ۱ کیلویی
+                                </button>
+                                <!-- NEW BUTTON: 2 Kilo Custom -->
+                                <button onclick="selectWeight('2000')" id="weight-2000" class="flex-1 min-w-[120px] py-4 px-3 md:px-6 rounded-xl font-semibold transition-all duration-300 bg-white/5 text-gray-400 border-2 border-transparent hover:border-white/20 text-sm md:text-base">
+                                    ۲ کیلویی <br class="md:hidden"><span class="hidden md:inline">(سفارشی)</span>
                                 </button>
                             </div>
                         </div>
@@ -1215,7 +1219,7 @@
                         <h3 class="text-2xl font-bold text-white mb-8">راه‌های ارتباطی</h3>
 
                         <div class="space-y-4">
-                            <!-- Change #3: Fixed Phone Font with Vazir explicitly -->
+                            <!-- Fixed Phone Font with Vazir explicitly -->
                             <a href="tel:+989129251003" class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-orange-500/10 transition-all group">
                                 <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center group-hover:bg-orange-500/30 transition-all flex-shrink-0">
                                     <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1321,7 +1325,7 @@
                     </div>
                 </div>
 
-                <!-- Change #3: Map Moved Outside Grid for Full Width on Desktop -->
+                <!-- Map Moved Outside Grid for Full Width on Desktop -->
                 <div class="w-full glass-card rounded-3xl p-2 overflow-hidden border border-white/10">
                     <iframe 
                         width="100%" 
@@ -1426,7 +1430,6 @@
     </div>
 
     <!-- ===== INVOICE MODAL ===== -->
-    <!-- Change #2: Max width adjusted for better desktop viewing (700px) -->
     <div id="invoice-modal" class="modal-overlay" onclick="closeInvoiceModal(event)">
         <div class="modal-content" style="max-width: 700px;" onclick="event.stopPropagation()">
             <div class="p-4 md:p-6 lg:p-8">
@@ -1481,6 +1484,8 @@
     <!-- ===== JAVASCRIPT ===== -->
     <script>
         // ===== GOOGLE SHEETS CONFIGURATION =====
+        // نکته: شما باید در فایل اکسل یا گوگل شیت خود یک ردیف اضافه کنید:
+        // Key: tablecloth-2000 | Value: (قیمت ۲ کیلویی)
         const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT_lrjochptPvt3I2q5wJw0YEx2l0g3aN3GRsqFofLBfFPvOHIC6jVybGoSHft9u29maxOW8eH7zgaT/pub?gid=0&single=true&output=csv'; 
 
         // ===== GLOBAL STATE =====
@@ -1493,6 +1498,7 @@
             prices: {
                 'tablecloth-400': 35000,
                 'tablecloth-1000': 85000,
+                'tablecloth-2000': 150000, // قیمت پیش‌فرض برای سفره ۲ کیلویی
                 'garbage-bag': 100000
             },
             discountTiers: [
@@ -1609,6 +1615,39 @@
             state.invoiceMeta.createdAt = null;
         }
 
+        // ===== FETCH PRICES FROM GOOGLE SHEET =====
+        async function fetchPrices() {
+            try {
+                const response = await fetch(GOOGLE_SHEET_CSV_URL);
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const text = await response.text();
+                const rows = text.split('\n').filter(row => row.trim() !== '');
+                
+                rows.forEach(row => {
+                    // Split by comma, but handle simple CSV format (assumes key,value)
+                    // For more complex CSV, a proper parser library is better, 
+                    // but for this simple structure:
+                    const parts = row.split(',');
+                    if (parts.length >= 2) {
+                        const key = parts[0].trim();
+                        const value = parseInt(normalizeDigits(parts[1].trim()), 10);
+                        
+                        if (state.prices.hasOwnProperty(key) && !isNaN(value)) {
+                            state.prices[key] = value;
+                        }
+                    }
+                });
+                
+                // Update price display if the calculator is visible
+                updatePrice();
+                console.log('Prices updated from Google Sheet:', state.prices);
+            } catch (error) {
+                console.error('Error fetching prices:', error);
+                // Fallback to default prices already in state
+            }
+        }
+
         // ===== HEADER SCROLL EFFECT =====
         window.addEventListener('scroll', () => {
             const header = document.getElementById('header');
@@ -1663,13 +1702,17 @@
         function selectWeight(weight) {
             state.selectedWeight = weight;
 
-            document.getElementById('weight-400').className = weight === '400'
-                ? 'flex-1 min-w-[120px] py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-orange-500/20 text-orange-400 border-2 border-orange-500'
-                : 'flex-1 min-w-[120px] py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-white/5 text-gray-400 border-2 border-transparent hover:border-white/20';
+            // Reset all buttons
+            const weights = ['400', '1000', '2000'];
+            const activeClass = 'flex-1 min-w-[120px] py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-orange-500/20 text-orange-400 border-2 border-orange-500';
+            const inactiveClass = 'flex-1 min-w-[120px] py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-white/5 text-gray-400 border-2 border-transparent hover:border-white/20';
 
-            document.getElementById('weight-1000').className = weight === '1000'
-                ? 'flex-1 min-w-[120px] py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-orange-500/20 text-orange-400 border-2 border-orange-500'
-                : 'flex-1 min-w-[120px] py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-white/5 text-gray-400 border-2 border-transparent hover:border-white/20';
+            weights.forEach(w => {
+                const btn = document.getElementById(`weight-${w}`);
+                if (btn) {
+                    btn.className = (w === weight) ? activeClass : inactiveClass;
+                }
+            });
 
             updatePrice();
         }
@@ -1760,8 +1803,19 @@
             let unitPrice = 0;
 
             if (state.selectedProduct === 'tablecloth') {
-                const weightText = state.selectedWeight === '400' ? '۴۰۰ گرمی' : '۱ کیلویی';
-                productName = `سفره یکبار مصرف ${weightText}`;
+                let weightText = '';
+                let customLabel = '';
+                
+                if (state.selectedWeight === '400') {
+                    weightText = '۴۰۰ گرمی';
+                } else if (state.selectedWeight === '1000') {
+                    weightText = '۱ کیلویی';
+                } else if (state.selectedWeight === '2000') {
+                    weightText = '۲ کیلویی';
+                    customLabel = ' (سفارشی)';
+                }
+
+                productName = `سفره یکبار مصرف ${weightText}${customLabel}`;
                 productDetails = `رنگ: ${state.colorNames[state.selectedColor]}`;
                 if (state.selectedColor === 'mixed') {
                     productDetails += ' (تعیین توسط تولیدی)';
@@ -1898,12 +1952,12 @@
         }
 
         const productData = {
-    'garbage-bag': {
-        title: 'کیسه زباله',
-        images: [
-            'images/products/garbage-bag-1.jpg',
-            'images/products/garbage-bag-2.jpg'
-        ],
+            'garbage-bag': {
+                title: 'کیسه زباله',
+                images: [
+                    'images/products/garbage-bag-1.jpg',
+                    'images/products/garbage-bag-2.jpg'
+                ],
                 content: `
                     <div class="bg-green-500/10 border border-green-500/30 rounded-xl p-4 mb-4">
                         <h4 class="text-green-400 font-semibold mb-1">مشخصات محصول</h4>
@@ -1929,18 +1983,19 @@
                 `
             },
             'tablecloth': {
-    title: 'سفره یکبار مصرف',
-    images: [
-        'images/products/tablecloth-1.jpg',
-        'images/products/tablecloth-2.jpg',
-        'images/products/tablecloth-3.jpg'
-    ],
+                title: 'سفره یکبار مصرف',
+                images: [
+                    'images/products/tablecloth-1.jpg',
+                    'images/products/tablecloth-2.jpg',
+                    'images/products/tablecloth-3.jpg'
+                ],
                 content: `
                     <div class="bg-orange-500/10 border border-orange-500/30 rounded-xl p-4 mb-4">
                         <h4 class="text-orange-400 font-semibold mb-2">مدل‌های موجود</h4>
                         <div class="flex gap-3 flex-wrap">
                             <span class="px-3 py-1 bg-white/10 rounded-lg text-white text-sm">سفره ۴۰۰ گرمی</span>
                             <span class="px-3 py-1 bg-white/10 rounded-lg text-white text-sm">سفره ۱ کیلویی</span>
+                            <span class="px-3 py-1 bg-white/10 rounded-lg text-white text-sm">سفره ۲ کیلویی (سفارشی)</span>
                         </div>
                     </div>
                     <div class="mb-4">
@@ -1970,6 +2025,10 @@
                             <li class="flex items-center gap-2">
                                 <svg class="w-5 h-5 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                                 مناسب مجالس و مهمانی‌ها
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                امکان سفارش سایزهای خاص
                             </li>
                         </ul>
                     </div>
@@ -2109,7 +2168,6 @@
         function initHeroSlider() {
             const slides = document.querySelectorAll('.hero-slide');
             if (slides.length > 0) {
-                // Activate first slide initially
                 slides[0].classList.add('active');
             }
             startHeroAutoSlide();
@@ -2119,13 +2177,8 @@
             const slides = document.querySelectorAll('.hero-slide');
             if (slides.length === 0) return;
             
-            // Remove active class from current
             slides[heroState.currentIndex].classList.remove('active');
-            
-            // Calculate next index
             heroState.currentIndex = (heroState.currentIndex + 1) % heroState.totalSlides;
-            
-            // Add active class to new
             slides[heroState.currentIndex].classList.add('active');
         }
 
