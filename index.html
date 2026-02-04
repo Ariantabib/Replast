@@ -405,10 +405,17 @@
         }
 
         .product-card-image {
-            position: relative;
-            height: 220px;
-            overflow: hidden;
-        }
+    position: relative;
+    height: 220px; /* ارتفاع پیش‌فرض برای موبایل */
+    overflow: hidden;
+}
+
+/* برای صفحات بزرگ‌تر از 1024 پیکسل (دسکتاپ) */
+@media (min-width: 1024px) {
+    .product-card-image {
+        height: 500px; /* ارتفاع جدید برای دسکتاپ */
+    }
+}
 
         /* ===== Price Display ===== */
         .price-display {
@@ -883,7 +890,7 @@
 <body>
     <!-- ===== HEADER ===== -->
     <header id="header" class="glass fixed top-0 z-50 transition-all duration-300" style="left: 0; right: 0; width: 100%; direction: ltr;">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style="direction: rtl;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-70" style="direction: rtl;">
             <div class="flex items-center justify-between h-16 lg:h-20">
                 <!-- Logo -->
                 <div class="flex items-center gap-3">
@@ -991,7 +998,7 @@
 
     <!-- ===== PRODUCTS SECTION ===== -->
     <section id="products" class="py-12 lg:py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-70">
             <div class="text-center mb-12">
                 <h2 class="section-title text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">محصولات ما</h2>
                 <p class="text-gray-400 mt-6 max-w-xl mx-auto">محصولات با کیفیت، قیمت شفاف و تحویل مطمئن</p>
@@ -1047,7 +1054,7 @@
 
     <!-- ===== SMART PRICE CALCULATOR ===== -->
     <section id="calculator" class="py-12 lg:py-16 bg-gradient-to-b from-transparent via-slate-900/50 to-transparent">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-70">
             <div class="text-center mb-12">
                 <h2 class="section-title text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">محاسبه‌گر هوشمند قیمت</h2>
                 <p class="text-gray-400 mt-6 max-w-xl mx-auto">محصول مورد نظر را انتخاب کنید و قیمت نهایی را به‌صورت لحظه‌ای مشاهده کنید</p>
@@ -1162,7 +1169,7 @@
 
     <!-- ===== ORDER LIST (CART) ===== -->
     <section id="order-list" class="py-12 lg:py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-70">
             <div class="text-center mb-12">
                 <h2 class="section-title text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">سبد سفارش</h2>
                 <p class="text-gray-400 mt-6 max-w-xl mx-auto">محصولات انتخابی شما برای دریافت پیش‌فاکتور</p>
@@ -1206,7 +1213,7 @@
 
     <!-- ===== CONTACT SECTION ===== -->
     <section id="contact" class="py-12 lg:py-16 bg-gradient-to-b from-transparent via-slate-900/50 to-transparent">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-70">
             <div class="text-center mb-12">
                 <h2 class="section-title text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">تماس با ما</h2>
                 <p class="text-gray-400 mt-6 max-w-xl mx-auto">برای ثبت سفارش یا هرگونه سوال، با واحد فروش در ارتباط باشید</p>
@@ -1349,7 +1356,7 @@
 
     <!-- ===== FOOTER ===== -->
     <footer class="py-12 border-t border-white/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-70">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="flex items-center gap-3">
                     <img src="images/logo.png" alt="رپلاست" class="w-10 h-10 rounded-xl">
