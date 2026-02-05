@@ -753,7 +753,7 @@
             border-radius: 4px;
         }
 
-        /* ===== Product Modal - No Scroll on Mobile ===== */
+                /* ===== Product Modal - No Scroll on Mobile ===== */
         .product-modal-content {
             display: flex;
             flex-direction: column;
@@ -772,12 +772,19 @@
 
         .product-modal-gallery {
             flex-shrink: 0;
-            height: 200px;
+            height: 200px; /* ارتفاع برای موبایل و تبلت */
             direction: ltr;
         }
 
         .product-modal-gallery .image-slider {
             height: 100%;
+        }
+
+        /* --- تغییر جدید: افزایش ارتفاع برای دسکتاپ --- */
+        @media (min-width: 1024px) {
+            .product-modal-gallery {
+                height: 450px; /* این عدد را برای تغییر ارتفاع در ویندوز کم یا زیاد کنید */
+            }
         }
 
         .product-modal-info {
